@@ -13,4 +13,4 @@ Disallow: /*.md$
 Disallow: /*?*sort=
 Disallow: /*?*lang=
 
-Sitemap: https://kilam.net/sitemap.xml
+Sitemap: https://kilam.net/sitemap-index.xml

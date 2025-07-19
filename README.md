@@ -60,7 +60,7 @@ Algunas de las integraciones en el sitio web incluyen:
 
 ### 🔧 Instalación
 
-1. Clona el repositorio
+1. Clona el reposi torio
 
    ```sh
    git clone https://github.com/susarrodev/KILAM.git
