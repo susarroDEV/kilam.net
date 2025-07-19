@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Endpoint</title>
+</head>
+<body>
+    <button id="test-btn">Test Endpoint</button>
+    <div id="result"></div>
+    
+    <script>
+        document.getElementById('test-btn').onclick = async function() {
+            const resultDiv = document.getElementById('result');
+            
+            try {
+                // Test GET first
+                console.log('Testing GET...');
+                const getResponse = await fetch('/api/contact.json');
+                console.log('GET Response status:', getResponse.status);
+                console.log('GET Response headers:', Object.fromEntries(getResponse.headers.entries()));
+                
+                const getResult = await getResponse.text();
+                console.log('GET Response text:', getResult.substring(0, 200));
+                
+                // Test POST
+                console.log('Testing POST...');
+                const formData = new FormData();
+                formData.append('name', 'Test');
+                formData.append('formId', 'test');
+                
+                const postResponse = await fetch('/api/contact.json', {
+                    method: 'POST',
+                    body: formData
+                });
+                console.log('POST Response status:', postResponse.status);
+                console.log('POST Response headers:', Object.fromEntries(postResponse.headers.entries()));
+                
+                const postResult = await postResponse.text();
+                console.log('POST Response text:', postResult.substring(0, 200));
+                
+                resultDiv.innerHTML = `
+                    <h3>GET: ${getResponse.status}</h3>
+                    <pre>${getResult.substring(0, 500)}</pre>
+                    <h3>POST: ${postResponse.status}</h3>
+                    <pre>${postResult.substring(0, 500)}</pre>
+                `;
+                
+            } catch (error) {
+                console.error('Error:', error);
+                resultDiv.innerHTML = `<p>Error: ${error.message}</p>`;
+            }
+        };
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+---
+import { members } from "@/data/members"
+import MemberCard from "@/components/utils/members/MemberCard.astro"
+import Title from "@/components/utils/Title.astro"
+import { about } from "@/i18n/about"
+
+interface MembersListProps {
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang } = Astro.props as MembersListProps
+---
+
+<section class="members-section">  
+  <Title
+    title={about[lang].members.title}
+    highlightTitle={about[lang].members.highlightTitle}
+    subtitle={about[lang].members.subtitle}
+    uppercase={{
+      title: false,
+      highlightTitle: true,
+      subtitle: false
+    }}
+    size="large"
+  />
+  <ul class="grid-container">
+    {members
+      .filter(member => member.scopes[0].toLowerCase() !== "placeholder")
+      .map((member) => (
+        <MemberCard 
+          member={member} 
+          lang={lang}
+          />
+    ))}
+  </ul>
+</section>
+
+<style>
+  .members-section {
+    background-color: var(--color-background-light);
+    width: 100%;
+    padding: 4rem 5%;
+    text-align: center;
+  }
+  h1 {
+    font-size: 2.5rem;
+    color: #007474;
+    margin-bottom: 1rem;
+    text-align: start;
+  }  ul {
+    width: 90%;
+    max-width: 1400px;
+    margin: 3rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 0;
+    list-style: none;
+  }
+  
+  .grid-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2.5rem;
+  }
+  
+  .grid-container > * {
+    flex: 0 0 280px; /* Ancho fijo para cada elemento */
+    margin: 0;
+  }
+    @media (max-width: 1200px) {
+    ul {
+      width: 95%;
+    }
+    .grid-container {
+      gap: 2rem;
+    }
+    .grid-container > * {
+      flex: 0 0 260px;
+    }
+  }
+    @media (max-width: 768px) {
+    ul {
+      width: 100%;
+    }
+    .grid-container {
+      gap: 1.75rem;
+    }
+    .grid-container > * {
+      flex: 0 0 240px;
+    }
+  }
+    @media (max-width: 600px) {
+    .grid-container {
+      gap: 1.5rem;
+    }
+    .grid-container > * {
+      flex: 0 0 220px;
+    }
+    .members-section {
+      padding: 2rem 3%;
+    }
+  }
+</style>

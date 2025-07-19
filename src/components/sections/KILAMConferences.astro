@@ -1,0 +1,36 @@
+---
+import ConferenceVideo from "@/components/utils/ConferenceVideo.astro"
+import Title from "@/components/utils/Title.astro"
+import { about } from "@/i18n/about"
+
+interface KILAMConferencesProps {
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang } = Astro.props as KILAMConferencesProps
+---
+
+<section class="members-section mt-14">
+  <Title
+    title={about[lang].conferences.title}
+    highlightTitle="KILAM"
+    subtitle={about[lang].conferences.subtitle}
+    uppercase={{
+      title: false,
+      highlightTitle: true,
+      subtitle: false
+    }}
+    jump={false}
+    size="large"
+    theme="light"
+  />
+  <ConferenceVideo  />
+</section>
+
+<style>
+  .members-section {
+    width: 100%;
+    padding: 2rem 10%;
+    text-align: center;
+  }
+</style>

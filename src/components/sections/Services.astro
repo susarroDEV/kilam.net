@@ -1,0 +1,157 @@
+---
+import { home } from "@/i18n/home.ts"
+
+interface ServicesProps {
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang } = Astro.props as ServicesProps
+---
+
+<section class="services-cards">
+  <article class="service-card">
+    <p>
+      <strong>
+        {home[lang].services.s1}
+      </strong>
+    </p>
+  </article>
+  <article class="service-card">
+    <p>
+      <strong>
+        {home[lang].services.s2}
+      </strong>
+    </p>
+  </article>
+  <article class="service-card">
+    <p>
+      <strong>
+        {home[lang].services.s3}
+      </strong>
+    </p>
+  </article>
+  <article class="service-card highlight">
+    <p>
+      <strong>
+        {home[lang].services.s4}
+      </strong>
+    </p>
+    <a href=`/${lang}/contact`>{home[lang].services.contact}</a>
+  </article>
+</section>
+
+<style>
+  .services-cards {
+    margin-top: 5rem;
+    display: grid;
+    gap: 2rem;
+    grid-template-rows: 1fr 1fr;
+    grid-template-columns: 2fr 1fr;
+    padding: 2rem 20%;
+    border-radius: 1.5rem;
+  }
+
+  .service-card {
+    background: rgba(var(--color-secondary-rgb-value), 0.1);
+    color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.30);
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.2s, box-shadow 0.2s;
+    border: 2.5px solid var(--color-primary);
+  }
+
+  .service-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.48);
+    border-color: var(--color-tertiary);
+  }
+
+  .service-card p {
+    font-size: 1rem;
+    margin: 0;
+    font-weight: 300;
+    text-align: left;
+    width: 100%;
+  }
+
+  .service-card strong {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-quinary);
+    display: block;
+    margin-top: 0.25em;
+  }
+
+  .service-card.highlight {
+    background: linear-gradient(120deg, var(--color-contrast) 60%, #fffde4 100%);
+    color: #222;
+    border: 2px solid var(--color-contrast);
+    box-shadow: 0 4px 24px 0 rgba(var(--color-contrast-rgb-value), 0.2);
+    align-items: flex-start;
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .service-card.highlight strong {
+    color: var(--color-primary);
+  }
+
+  .service-card.highlight a {
+    margin-top: 1.5rem;
+    color: var(--color-primary);
+    background: var(--color-contrast);
+    border: 2.5px solid var(--color-primary);
+    padding: .6rem 1.2rem;
+    border-radius: .35rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.2);
+  }
+
+  .service-card.highlight a:hover {
+    background: var(--color-primary);
+    color: var(--color-contrast);
+    border-color: var(--color-primary);
+  }
+
+  @media (width < 900px) {
+    .services-cards {
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+      padding: 1.2rem;
+    }
+    .service-card {
+      padding: 1.2rem 1rem;
+      min-height: 140px;
+    }
+    .service-card.highlight  {
+      grid-row: 4;
+    }
+  }
+
+  @media (width < 600px) {
+    .services-cards {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+    .service-card {
+      padding: 1rem 0.7rem;
+      min-height: 110px;
+    }
+    .service-card p {
+      font-size: 0.95rem;
+    }
+    .service-card strong {
+      font-size: 1.05rem;
+    }
+    .service-card.highlight  {
+      grid-row: 4;
+    }
+  }
+</style>

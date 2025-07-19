@@ -1,0 +1,147 @@
+---
+import { portfolio } from "@/i18n/portfolio"
+import ProjectCard from "@/components/utils/ProjectCard.astro"
+import Title from "@/components/utils/Title.astro"
+import type { Project } from "@/types/projectsTypes"
+
+interface ProjectsTimelineProps {
+  projects: Project[]
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang, projects } = Astro.props as ProjectsTimelineProps
+---
+
+<section>
+  <!-- 
+  <div class="video-bg">
+    <video autoplay loop muted playsinline>
+      <source src="/beacon.webm" type="video/webm">
+    </video>
+  </div> 
+  -->
+  <Title 
+    title={portfolio[lang].timeline.title}
+    subtitle={portfolio[lang].timeline.subtitle}
+    size="large"
+    theme="light"
+    align="center"
+    jump={false}
+  />
+  <div class="timeline">
+    <div class="line"></div>
+    {projects
+      .toReversed()
+      .map((project, index) => (
+      <ProjectCard
+        project={project}
+        position={index % 2 === 0 ? 'left' : 'right'}
+        lang={lang}
+
+      />
+    ))}
+  </div>
+</section>
+
+<style>
+  /* .video-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: cover;
+    opacity: 0.5;
+  } */
+  section {
+    position: relative;
+    margin: 10rem auto auto auto;
+  }
+  .timeline {
+    position: relative;
+    margin: 4rem auto 0 auto;
+    width: 70%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .timeline > :global(*:not(:first-of-type)) {
+    margin-top: -5rem;
+  }
+  .line {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: 2px;
+    background-image: linear-gradient(to bottom, #FFF0 0%, #FFFC 5%, #FFFC 95%, #FFF0 100%);
+    transform: translateX(-50%);
+  }
+
+  @media (width < 1200px) {
+    .timeline {
+      width: 80%;
+    }
+    
+    section {
+      margin: 8rem auto auto auto;
+    }
+  }
+
+  @media (width < 992px) {
+    .timeline {
+      width: 90%;
+    }
+    
+    .timeline > :global(*:not(:first-of-type)) {
+      margin-top: -1.5rem;
+    }
+    
+    section {
+      margin: 6rem auto auto auto;
+    }
+  }
+
+  @media (width < 768px) {
+    section {
+      padding: 0 1rem;
+      margin: 4rem auto auto auto;
+    }
+    
+    .line {
+      display: none;
+    }
+    
+    .timeline {
+      width: 100%;
+    }
+    
+    .timeline > :global(*:not(:first-of-type)) {
+      margin-top: 1.5rem;
+    }
+  }
+
+  @media (width < 480px) {
+    section {
+      padding: 0 0.5rem;
+      margin: 3rem auto auto auto;
+    }
+    
+    .timeline > :global(*:not(:first-of-type)) {
+      margin-top: 1.5rem;
+    }
+  }
+</style>

@@ -1,0 +1,108 @@
+---
+import DateIcon from "@/components/ui/DateIcon.astro"
+import PlayersIcon from "@/components/ui/PlayersIcon.astro"
+import { Image } from "astro:assets"
+import type { Project } from "@/types/projectsTypes"
+import { home } from "@/i18n/home"
+
+interface ProjectSlideProps {
+  project: Project
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { project, lang } = Astro.props as ProjectSlideProps
+
+const { id, name, texts, facts } = project
+---
+
+<section class="slide-container w-full h-full relative">
+  <Image 
+    src={`/projects/${id}/${id}-main.webp`}
+    alt={`Imagen del proyecto "${name}"`}
+    width="1000"
+    height="1000"
+    class="w-full h-full object-cover absolute -z-10"
+    />
+  <section class="container w-1/2 bg-black/50 h-full text-[#f0f0f0] p-8">
+    <h1 class="text-2xl uppercase mb-3">
+      {name}
+    </h1>
+    <p class="text-sm font-thin mb-1.5">
+      {texts.preview}
+    </p>
+    <div class="stuff-wrapper">
+      <p class="text-xs">
+        <DateIcon />
+        {facts.date}
+      </p>
+      <p class="text-xs">
+        <PlayersIcon />
+        {facts.players}
+      </p>
+      <a
+        class="text-xs"
+        href={`/${lang}/projects/${id}`}>
+        {home[lang].carousel}
+      </a>
+    </div>
+  </section>
+</section>
+
+<style>
+  section {
+    border-radius: .5rem;
+    box-shadow: inset 0 0 0 0.2rem var(--detail-medium-contrast);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+  }
+  img {
+    border-radius: .5rem;
+    
+  }
+  a {
+    width: fit-content;
+    color: #F0F075;
+    border: 1px solid #F0F075;
+    padding: .5rem 1rem;
+    border-radius: .25rem;
+    transition: all .3s;
+  }
+  p {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+  }
+  .stuff-wrapper {
+    color: #F0F075;
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: .5rem;
+  }
+  a:hover {
+    background-color: #F0F075;
+    color: #000;
+  }
+
+  @media (max-width: 768px) {
+    img {
+      place-content: center;
+    }
+    .container {
+      width: 100%;
+      padding: 1.5rem;
+    }
+    h1 {
+      font-size: 1rem;
+    }
+    p {
+      font-size: .65rem;
+    }
+
+    a {
+      font-size: .5rem;
+      padding: .25rem .5rem;
+    }
+  }
+</style>

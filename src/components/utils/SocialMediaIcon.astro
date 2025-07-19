@@ -1,0 +1,23 @@
+---
+import DiscordIcon from "@/components/ui/media/DiscordIcon.astro"
+import InstagramIcon from "@/components/ui/media/InstagramIcon.astro"
+import TwitchIcon from "@/components/ui/media/TwitchIcon.astro"
+import XIcon from "@/components/ui/media/XIcon.astro"
+import YouTubeIcon from "@/components/ui/media/YouTubeIcon.astro"
+import MailIcon from "@/components/ui/media/MailIcon.astro"
+
+interface SocialMediaIconProps {
+  name: string
+  scheme?: "dark" | "light" | "member" | "auto"
+  size?: "xs" | "sm" | "md" | "lg" | "xl"
+}
+
+const { name, scheme, size } = Astro.props as SocialMediaIconProps
+---
+
+{ name === "Twitch" && <TwitchIcon scheme={scheme} size={size} /> }
+{ name === "YouTube" && <YouTubeIcon scheme={scheme} size={size} /> }
+{ name === "Instagram" && <InstagramIcon scheme={scheme} size={size} /> }
+{ name === "Discord" && <DiscordIcon scheme={scheme} size={size} /> }
+{ (name === "X" || name === "Twitter") && <XIcon scheme={scheme} size={size} /> }
+{ name === "Mail" && <MailIcon scheme={scheme} size={size} /> }

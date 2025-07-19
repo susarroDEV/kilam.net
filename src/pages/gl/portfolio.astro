@@ -1,0 +1,18 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import ProjectsTimeline from "@/components/sections/ProjectsTimeline.astro"
+import { projects_gl } from "@/data/projects/projects-gl"
+
+export const prerender = true
+---
+
+<Layout
+  title="KILAM | Proxectos"
+  description="Explora os nosos proxectos destacados en KILAM, desde eventos multixogador ata experiencias únicas de Minecraft."
+  lang="gl"
+  > 
+  <ProjectsTimeline 
+    projects={projects_gl}
+    lang="gl" 
+    />
+</Layout>

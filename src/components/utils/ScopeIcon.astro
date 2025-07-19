@@ -1,0 +1,20 @@
+---
+import BrushIcon from "@/components/ui/scope/BrushIcon.astro"
+import BulbIcon from "@/components/ui/scope/BulbIcon.astro"
+import GearIcon from "@/components/ui/scope/GearIcon.astro"
+import WrenchIcon from "@/components/ui/scope/WrenchIcon.astro"
+
+
+interface SocialMediaIconProps {
+  name: string
+  scheme?: "dark" | "light" | "auto"
+  size?: "xs" | "sm" | "md" | "lg" | "xl"
+}
+
+const { name, scheme, size } = Astro.props as SocialMediaIconProps
+---
+
+{ name === "art" && <BrushIcon scheme={scheme} size={size} /> }
+{ name === "game-design" && <BulbIcon scheme={scheme} size={size} /> }
+{ name === "development" && <GearIcon scheme={scheme} size={size} /> }
+{ name === "building" && <WrenchIcon scheme={scheme} size={size} /> }

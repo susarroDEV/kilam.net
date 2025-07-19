@@ -1,0 +1,183 @@
+---
+import { getRelativeLocaleUrl } from "astro:i18n"
+import Image from "astro/components/Image.astro"
+import SocialMediaIcon from "@/components/utils/SocialMediaIcon.astro"
+import LangIcon from "@/components/ui/LangIcon.astro"
+
+interface FooterProps {
+  isInMobileDialog: boolean
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { isInMobileDialog, lang } = Astro.props as FooterProps
+
+const currentYear = new Date().getFullYear()
+
+const pathname = Astro.url.pathname
+const pathWithoutLang = pathname.replace(/^\/[a-z]{2}(\/|$)/, '/') || '/'
+
+const esUrl = getRelativeLocaleUrl('es', pathWithoutLang)
+const enUrl = getRelativeLocaleUrl('en', pathWithoutLang)
+const caUrl = getRelativeLocaleUrl('ca', pathWithoutLang)
+const euUrl = getRelativeLocaleUrl('eu', pathWithoutLang)
+const glUrl = getRelativeLocaleUrl('gl', pathWithoutLang)
+---
+
+<footer class={`${!isInMobileDialog ? "mt-[7rem]" : ""} text-[#DEFFFF]`}>
+  <div class="line-divider"/>
+  <div class="flex justify-around items-center py-6">
+    <p class="text-center">
+      © 2022-{currentYear} | Grupo KILAM
+    </p>
+    <div class="language-selector">
+      <LangIcon />
+      <select class="language-select" onchange="window.location.href = this.value">
+        <option value={esUrl} selected={lang === 'es'}>Español</option>
+        <option value={enUrl} selected={lang === 'en'}>English</option>
+        <option value={caUrl} selected={lang === 'ca'}>Català</option>
+        <option value={euUrl} selected={lang === 'eu'}>Euskera</option>
+        <option value={glUrl} selected={lang === 'gl'}>Galego</option>
+      </select>
+    </div>
+    <ul class="flex justify-center items-center gap-5">
+      <li>
+        <a 
+          href="https://twitter.com/GrupoKILAM"
+          target="_blank"
+          rel="noopener noreferrer"
+          >
+          <SocialMediaIcon
+            name="X"
+            scheme="light"
+            size="lg"
+            />
+        </a>
+      </li>
+      <li>
+        <a 
+          href="https://www.youtube.com/@GrupoKILAM"
+          target="_blank"
+          rel="noopener noreferrer"
+          >
+          <SocialMediaIcon
+            name="YouTube"
+            scheme="light"
+            size="lg"
+            />
+        </a>
+      </li>
+      <li>
+        <a 
+          href="https://discord.gg/tcWa3ewz8G"
+          target="_blank"
+          rel="noopener noreferrer"
+          >
+          <SocialMediaIcon 
+            name="Discord"
+            scheme="light"
+            size="lg" 
+            />
+        </a>
+      </li>
+      <li>
+        <a 
+          href="https://github.com/susarroDEV"
+          target="_blank"
+          rel="noopener noreferrer"
+          >
+          <Image
+            src="/logos/susarroDEV-logo.avif"
+            alt="The logo of susarroDEV"
+            width="30"
+            height="30"
+            class="rounded-full"
+          />
+        </a>
+      </li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .line-divider {
+    width: 85vw;
+    height: 5px;
+    margin: auto;
+    background-image: linear-gradient(
+      to left,
+      rgba(var(--color-quinary-rgb-value), 0),
+      rgba(var(--color-quinary-rgb-value), 1),
+      rgba(var(--color-quinary-rgb-value), 0)
+    );
+  }
+
+  .language-selector {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: .25rem .5rem;
+    border-radius: .35rem;
+    border: 2px solid var(--color-tertiary);
+  }
+
+  .language-select {
+    background: transparent;
+    border: none;
+    border-radius: 4px;
+    padding: 6px 8px;
+    font-size: 14px;
+    color: var(--color-quinary);
+    cursor: pointer;
+    outline: none;
+  }
+
+  .language-select option {
+    background-color: #1a1a1a;
+    color: var(--color-quinary);
+    padding: 8px 12px;
+    border: none;
+  }
+
+  .language-select option:hover {
+    background-color: var(--color-tertiary);
+  }
+
+  .language-select option:checked {
+    background-color: var(--color-tertiary);
+    color: var(--color-quinary);
+  }
+
+  @media (width < 768px) {
+    footer {
+      font-size: .8rem;
+    }
+
+    .flex.justify-around {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    p {
+      width: 100%;
+      order: 3;
+    }
+
+    .language-selector {
+      order: 2;
+    }
+
+    .language-select {
+      font-size: 12px;
+      min-width: 100px;
+      padding: 4px 6px;
+    }
+
+    ul {
+      width: 100%;
+      flex-wrap: wrap;
+      order: 1;
+    }
+  }
+</style>

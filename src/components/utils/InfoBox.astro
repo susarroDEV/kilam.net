@@ -1,0 +1,184 @@
+---
+import type { ProjectTextBox } from "@/types/projectsTypes"
+import MediaBox from "@/components/utils/MediaBox.astro"
+import CollageBox from "@/components/utils/CollageBox.astro"
+import BoxTypeIcon from "@/components/utils/BoxTypeIcon.astro"
+import { portfolio } from "@/i18n/portfolio"
+
+interface InfoBoxProps {
+  box: ProjectTextBox,
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { box, lang } = Astro.props as InfoBoxProps
+
+const display = 
+  box.media &&
+  box.media.length > 0 &&
+  (
+    (box.media.length === 1 && (box.media[0].position === 'up' || box.media[0].position === 'down')) ||
+    (box.media.length > 1 && (box.media[0].position === 'up' || box.media[0].position === 'down'))
+  ) ? "vertical" : "horizontal"
+---
+
+<article class={`box-${box.scheme} ${box.title === "" ? "main-box" : ""}`}>
+  <h3 class={`${box.title === "" ? "main-title" : ""} flex items-center gap-4`}>
+    <span class="border-[#45a8a8] bg-[#45a8a893] border-2 rounded-[.55rem] p-1">
+      <BoxTypeIcon type={box.type} />
+    </span>
+    <span>
+      {
+        box.title || portfolio[lang].project
+      }
+    </span>
+  </h3>
+  <div class={`content display-${display}`} >
+    <div class="text-content text-pretty">
+      {
+        box.paragraphs.length > 0 &&
+        box.paragraphs.map((paragraph) => (
+          <p>
+            {paragraph}
+          </p>
+        ))
+      }
+    </div>
+  {
+    box.media &&
+    box.media.length > 0 &&
+      (
+        box.media.length === 1 ?
+          <MediaBox 
+            {...box.media[0]}
+          />
+          :
+          <CollageBox 
+            media={box.media}
+            position={box.media[0].position}
+          />
+      )
+    }
+  </div>
+</article>
+
+<style>
+  article {
+    min-height: 300px;
+    height: auto;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    color: #f0f0f0;
+    padding: 1.75rem 3rem;
+    border-radius: 0.35rem;
+    display: flex;
+    overflow: hidden;
+    flex-direction: column;
+    border: 2px solid #00a0a0;
+    background-image: 
+      radial-gradient(circle at 20% 80%, rgba(0, 160, 160, 0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(69, 168, 168, 0.15) 0%, transparent 50%),
+      linear-gradient(
+        135deg,
+        var(--color-tertiary) 0%,
+        rgba(var(--color-tertiary-rgb-value), 0.8) 15%,
+        rgba(var(--color-tertiary-rgb-value), 0.4) 50%,
+        rgba(var(--color-tertiary-rgb-value), 0.7) 85%,
+        var(--color-tertiary) 100%
+      );
+    backdrop-filter: blur(2px);
+  }
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-quinary);
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .main-box {
+    font-size: 1.25rem;
+  }
+
+  .content {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    gap: 2rem;
+    overflow: hidden;
+  }
+
+  .text-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    justify-content: center;
+  }
+
+  .box-normal {
+    width: 72.5%;
+  }
+
+  .box-compact {
+    width: 35%;
+  }
+
+  .display-horizontal {
+    flex-direction: row;
+    justify-content: center;
+    align-items: start;
+  }
+  .display-vertical {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: 1024px) {
+    article {
+      padding: 1.5rem 2rem;
+      min-height: 280px;
+    }
+    
+    .main-title {
+      font-size: 2rem;
+    }
+    
+    h3 {
+      font-size: 1.75rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    article {
+      padding: 1.25rem 1.5rem;
+      min-height: 250px;
+      width: 95% !important;
+      font-size: .85rem !important;
+    }
+    
+    .main-title {
+      font-size: 1.75rem;
+    }
+    
+    h3 {
+      font-size: 1.5rem;
+    }
+    
+    .content {
+      gap: 1.5rem;
+    }
+    
+    .display-horizontal {
+      flex-direction: column;
+      gap: 1rem;
+    }
+    
+    .box-normal,
+    .box-compact {
+      width: 100%;
+    }
+  }
+</style>

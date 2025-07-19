@@ -1,0 +1,208 @@
+---
+import Title from "@/components/utils/Title.astro"
+import { hero } from "@/i18n/components/hero.ts"
+
+interface HeroProps {
+  srcUrl: string
+  index: boolean
+  about: boolean
+  projects: boolean
+  type: "video" | "image"
+  projectName?: string
+  projectFacts?: {
+    date: string
+    players: string
+  }
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { srcUrl, index, about, projects, type, projectName, projectFacts, lang } = Astro.props as HeroProps
+---
+
+<section class={`hero-section ${about ? 'project-cutted' : ''}`}>
+  {
+    type === "video" ? (
+      <div class="media-container">
+        <video
+          autoplay
+          loop
+          muted
+          playsinline
+          class={`hero-video`}
+        >
+          <source src={`/${srcUrl}`} type="video/mp4" />
+        </video>
+        <div class="overlay"></div>
+      </div>
+    ) : (
+      <div class="media-container">
+        <img 
+          src={`/${srcUrl}`}
+          alt="Hero Image"
+          class={`hero-image ${projects ? 'project-mask' : ''} ${about ? 'about-mask' : ''}`}
+          loading="eager"
+        />
+      </div>
+    )
+  }
+  { index && 
+    <div class="hero-content text-content">
+      <Title 
+        title="Grupo"
+        highlightTitle="KILAM"
+        subtitle={hero[lang].home}
+        size="extra-large"
+        align="center"
+        theme="accent"
+        jump={false}
+        uppercase={{
+            title: true,
+            highlightTitle: false,
+            subtitle: false
+        }}
+        className="hero-title-component"
+        />
+    </div>
+  }
+  {
+    projects &&
+    <div class="hero-content text-content">
+      <Title 
+        title={hero[lang].project}
+        highlightTitle={projectName}
+        size="extra-large"
+        align="center"
+        theme="light"
+        uppercase={{
+            title: true,
+            highlightTitle: false,
+            subtitle: false
+        }}
+        className="hero-title-component"
+      />
+      {
+        projectFacts &&
+        <div class="project-facts">
+          <p>{projectFacts.date}</p>
+          <span>
+            •
+          </span>
+          <p>{projectFacts.players}</p>
+        </div>
+      }
+    </div>
+  }
+</section>
+
+<style>
+  .hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .project-facts {
+    color: var(--color-text);
+    font-size: 1.2rem;
+    margin-top: 1rem;
+    text-align: center;
+    display: flex;
+    gap: 0.5rem;
+    color: var(--color-quinary);
+  }
+  
+  .project-facts span {
+    color: var(--color-secondary);
+    font-weight: bold;
+  }
+
+  .project-mask {
+    mask-image: linear-gradient(to bottom, #000, #0000);
+  }
+  .about-mask {
+    mask-image: linear-gradient(to bottom, #000 90%, #0006);
+    mask-composite: intersect;
+    will-change: mask-image;
+    transform: translateZ(0);
+  }
+
+  .hero-section {
+    position: relative;
+    height: 85vh;
+    width: 100%;
+    overflow: hidden;
+    min-height: 85vh;
+  }
+
+  .media-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .hero-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    backface-visibility: hidden;
+  }
+
+  .project-cutted {
+    height: 78vh;
+    min-height: 78vh;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4));
+    z-index: 2;
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 0 1rem;
+  }  
+  .text-content {
+    margin-bottom: 2rem;
+    animation: fadeInUp 1s ease-out;
+    width: 100%;
+    animation-fill-mode: both;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      height: 100vh;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-section {
+      height: 70vh;
+    }
+  }
+</style>

@@ -1,0 +1,44 @@
+---
+import type { MediaBox } from "@/types/projectsTypes"
+
+interface CollageBoxProps {
+  media: MediaBox[]
+  position: 'up' | 'down' | 'left' | 'right'
+}
+
+const { media, position } = Astro.props as CollageBoxProps
+---
+
+<div class={`collage-box ${media.length % 2 === 0 ? 'even' : 'odd'} position-${position}`}>
+  {
+    media.map(item => (
+      <img 
+        src = {item.src}
+        alt = {item.alt || ""}
+        />
+    ))
+  }
+</div>
+
+<style>
+  .collage-box {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .collage-box img {
+    width: 20rem;
+    height: auto;
+    border-radius: 0.35rem;
+    border: 2px solid var(--color-contrast);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .collage-box img:hover {
+    box-shadow: 0px 0px 10px var(--color-contrast);
+  }
+</style>

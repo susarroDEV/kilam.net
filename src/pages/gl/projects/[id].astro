@@ -1,0 +1,54 @@
+---
+import type { GetStaticPaths } from "astro"
+
+import Hero from "@/components/sections/Hero.astro"
+import ProjectBoxes from "@/components/sections/ProjectBoxes.astro"
+import Layout from "@/layouts/Layout.astro"
+import FeedbackComments from "@/components/sections/FeedbackComments.astro"
+
+import type { Project } from "@/types/projectsTypes"
+import { projects_gl } from "@/data/projects/projects-gl"
+
+const lang = "gl"
+const { id: rawId } = Astro.params
+if (!rawId) return Astro.redirect('/404')
+
+const id = rawId.includes('/') ? rawId.split('/').pop() : rawId
+if (!id) return Astro.redirect('/404')
+
+const project = projects_gl.find(project => project.id === id)
+if (!project) return Astro.redirect('/404')
+
+export const getStaticPaths = (() => {
+  if (projects_gl.length > 0) {
+    return projects_gl.map(project => ({
+      params: { id: project.id }
+    }))
+  }
+  return []
+}) satisfies GetStaticPaths;
+
+export const prerender = true
+---
+
+<Layout
+  title=`KILAM | ${project.name}`
+  description={project.texts.preview}
+  lang={lang}
+  >
+  <Hero 
+    srcUrl={`projects/${id}/${id}-main.webp`} 
+    projectName={project.name}
+    projectFacts={project.facts}
+    projects
+    lang={lang}
+    />
+  <ProjectBoxes 
+    boxes={project.texts.boxes}
+    lang={lang}
+    />
+  <FeedbackComments
+    feedback={project.texts.feedback}
+    lang={lang}
+    />
+</Layout>

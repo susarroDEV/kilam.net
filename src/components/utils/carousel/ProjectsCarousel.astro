@@ -1,0 +1,150 @@
+---
+import ProjectSlide from "@/components/utils/carousel/ProjectSlide.astro"
+import type { Project } from "@/types/projectsTypes"
+import "@/styles/emblaCarousel.css"
+
+const desiredIds = [
+  "mafiosos",
+  "golden-opportunity-3",
+  "isla-trivial",
+  "escondite-mikecrack",
+  "bingo-battle"
+]
+
+interface ProjectsCarouselProps {
+  projects: Project[]
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang, projects } = Astro.props as ProjectsCarouselProps
+
+const desiredProjects = projects.filter((project) => desiredIds.includes(project.id))
+---
+
+<script>
+import EmblaCarousel, {
+  type EmblaOptionsType,
+  type EmblaCarouselType
+} from 'embla-carousel'
+import Autoplay from 'embla-carousel-autoplay'
+
+const OPTIONS: EmblaOptionsType = { dragFree: true, loop: true }
+
+const emblaNode = document.querySelector('.embla') as HTMLElement
+const viewportNode = emblaNode.querySelector('.embla__viewport') as HTMLElement
+const dotsNode = emblaNode.querySelector('.embla__dots') as HTMLElement
+
+const onNavButtonClick = (emblaApi: EmblaCarouselType): void => {
+  /* const autoplay = emblaApi?.plugins()?.autoplay
+  if (!autoplay) return
+
+  const resetOrStop =
+    autoplay.options.stopOnInteraction === false
+      ? autoplay.reset
+      : autoplay.stop
+
+  resetOrStop() */
+}
+
+const addDotBtnsAndClickHandlers = (
+  emblaApi: EmblaCarouselType,
+  dotsNode: HTMLElement,
+  onButtonClick?: (emblaApi: EmblaCarouselType) => void
+): (() => void) => {
+  let dotNodes: HTMLElement[] = []
+
+  const addDotBtnsWithClickHandlers = (): void => {
+    dotsNode.innerHTML = emblaApi
+      .scrollSnapList()
+      .map(() => '<button class="embla__dot" type="button"></button>')
+      .join('')
+
+    const scrollTo = (index: number): void => {
+      emblaApi.scrollTo(index)
+      if (onButtonClick) onButtonClick(emblaApi)
+    }
+
+    dotNodes = Array.from(dotsNode.querySelectorAll('.embla__dot'))
+    dotNodes.forEach((dotNode, index) => {
+      dotNode.addEventListener('click', () => scrollTo(index), false)
+    })
+  }
+
+  const toggleDotBtnsActive = (): void => {
+    const previous = emblaApi.previousScrollSnap()
+    const selected = emblaApi.selectedScrollSnap()
+    dotNodes[previous].classList.remove('embla__dot--selected')
+    dotNodes[selected].classList.add('embla__dot--selected')
+  }
+
+  emblaApi
+    .on('init', addDotBtnsWithClickHandlers)
+    .on('reInit', addDotBtnsWithClickHandlers)
+    .on('init', toggleDotBtnsActive)
+    .on('reInit', toggleDotBtnsActive)
+    .on('select', toggleDotBtnsActive)
+
+  return (): void => {
+    dotsNode.innerHTML = ''
+  }
+}
+
+const emblaApi = EmblaCarousel(viewportNode, OPTIONS, [Autoplay()])
+
+const removeDotBtnsAndClickHandlers = addDotBtnsAndClickHandlers(
+  emblaApi,
+  dotsNode,
+  onNavButtonClick
+)
+
+emblaApi.on('destroy', removeDotBtnsAndClickHandlers)
+</script>
+
+<section class="embla">
+  <div class="embla__viewport">
+    <div class="embla__container">
+      {
+        desiredProjects
+          .map((project) => (
+          <div class="embla__slide">
+            <div class="embla__slide__project">
+              <ProjectSlide
+                lang={lang}
+                project={project}
+              >
+                {project.texts.preview}
+              </ProjectSlide>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <div class="embla__controls">
+    <div class="embla__dots"></div>
+  </div>
+  <!--
+  <div class="embla__controls">
+    <div class="embla__buttons">
+      <button class="embla__button embla__button--prev" type="button">
+        <svg class="embla__button__svg" viewBox="0 0 532 532">
+          <path
+            fill="currentColor"
+            d="M355.66 11.354c13.793-13.805 36.208-13.805 50.001 0 13.785 13.804 13.785 36.238 0 50.034L201.22 266l204.442 204.61c13.785 13.805 13.785 36.239 0 50.044-13.793 13.796-36.208 13.796-50.002 0a5994246.277 5994246.277 0 0 0-229.332-229.454 35.065 35.065 0 0 1-10.326-25.126c0-9.2 3.393-18.26 10.326-25.2C172.192 194.973 332.731 34.31 355.66 11.354Z"
+            >
+          </path>
+        </svg>
+      </button>
+      <button class="embla__button embla__button--next" type="button">
+        <svg class="embla__button__svg" viewBox="0 0 532 532">
+          <path
+            fill="currentColor"
+            d="M176.34 520.646c-13.793 13.805-36.208 13.805-50.001 0-13.785-13.804-13.785-36.238 0-50.034L330.78 266 126.34 61.391c-13.785-13.805-13.785-36.239 0-50.044 13.793-13.796 36.208-13.796 50.002 0 22.928 22.947 206.395 206.507 229.332 229.454a35.065 35.065 0 0 1 10.326 25.126c0 9.2-3.393 18.26-10.326 25.2-45.865 45.901-206.404 206.564-229.332 229.52Z"
+            >
+          </path>
+        </svg>
+      </button>
+    </div> 
+    -->
+  </div>
+</section>

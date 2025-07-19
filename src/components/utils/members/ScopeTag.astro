@@ -1,0 +1,45 @@
+---
+import { getScopeName } from "@/utils/getScopeName.ts"
+import ScopeIcon from "@/components/utils/ScopeIcon.astro"
+
+interface ScopeTagProps {
+  scope: string
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+let { scope, lang } = Astro.props as ScopeTagProps
+let scopeName = getScopeName(scope, lang)
+let styleInLine = `
+  color: var(--color-${scope});
+  border-color: var(--color-${scope});
+  background-color: rgba(var(--color-${scope}-rgb-value), 0.3);
+`
+---
+
+<li style={styleInLine}>
+  <ScopeIcon
+    name={scope}
+    size="sm"
+    scheme="auto"
+    class="scope-icon"
+    />
+  <span>
+    {scopeName ? scopeName : scope}
+  </span>
+</li>
+
+<style>
+  li {
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 0.25rem 0.45rem;
+    border-radius: .35rem;
+    border: 2px solid;
+  }
+  span {
+    font-size: 0.625rem;
+    margin-left: 5px
+  }
+</style>

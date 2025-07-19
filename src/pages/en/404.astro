@@ -1,0 +1,72 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import Title from "@/components/utils/Title.astro"
+
+export const prerender = true
+---
+
+<Layout
+  title="404 | Página no encontrada"
+  description="La página que buscas no existe o ha sido movida."
+  lang="en"
+  >  
+  <section class="relative">
+    <div class="title-wrapper">
+      <Title 
+        title="Error"
+        highlightTitle="404"
+        align="center"
+        theme="light"
+        jump={false}
+        size="extra-large"
+        className="error-title"
+        />
+    </div>
+    <p>
+      Sorry, but the page you are trying to visit does not exist or is not available at the moment.
+    </p>
+    <a href="/">
+      Back to home
+    </a>
+  </section>
+</Layout>
+
+<style>
+  section {
+    padding: 2rem;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  
+  p {
+    font-size: 1.5rem;
+    color : var(--color-quinary);
+    max-width: 600px;
+    margin: 1rem auto;
+  }
+  
+  a {
+    display: inline-block;
+    padding: 0.8rem 1.5rem;
+    background: linear-gradient(160deg, rgba(var(--color-secondary-rgb-value), 0.9) 20%, var(--color-primary) 100%);
+    color: var(--color-quinary);
+    border: 2px solid var(--color-quinary);
+    border-radius: .35rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    margin-top: 2.5rem;
+  }
+  .title-wrapper {
+    margin-top: 10rem;
+  }
+  a:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(var(--color-primary-rgb-value), 0.3);
+    background: linear-gradient(160deg, rgba(var(--color-secondary-rgb-value), 0.7) 20%, var(--color-primary) 100%);
+  }
+</style>

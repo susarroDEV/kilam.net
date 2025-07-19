@@ -1,0 +1,24 @@
+---
+import Hero from "@/components/sections/Hero.astro"
+import KILAMConferences from "@/components/sections/KILAMConferences.astro"
+import MembersList from "@/components/sections/MembersList.astro"
+import Layout from "@/layouts/Layout.astro"
+
+export const prerender = true
+---
+
+<Layout
+  // EUSKERA
+  title="KILAM | Taldea"
+  description="KILAM atzean dagoen taldea eta haien konferentziak ezagutu."
+  lang="eu"
+  >
+  <Hero
+    srcUrl="kilam-mountain.avif"
+    type="image"
+    about
+    lang="eu"
+    />
+  <MembersList lang="eu" />
+  <KILAMConferences lang="eu" />
+</Layout>

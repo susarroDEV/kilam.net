@@ -1,0 +1,74 @@
+---
+import type { RRSSType } from "@/types/membersType"
+import SocialMediaIcon from "@/components/utils/SocialMediaIcon.astro"
+
+let { rrss } = Astro.props
+---
+
+<ul class="rrss-member-list">
+  {rrss.map((rs: RRSSType) => (
+    <li class="social-media" title={rs.name}>
+      {rs.url ? (
+        <a href={rs.url} target="_blank" rel="noopener noreferrer" class="rs-link">
+          {rs.name !== "Email" &&
+            <div class="icon-wrapper">
+              <SocialMediaIcon name={rs.name} scheme="member" size="lg" />
+            </div>
+          }
+          <span class="rs-user">{rs.user}</span>
+        </a>
+      ) : (
+        <span class="rs-link rs-disabled">
+          {rs.name !== "Email" &&
+            <div class="icon-wrapper">
+              <SocialMediaIcon name={rs.name} scheme="member" size="lg" />
+            </div>
+          }
+          <span class="rs-user">{rs.user}</span>
+        </span>
+      )}
+    </li>
+  ))}
+</ul>
+
+<style>
+  ul {
+    width: 90%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: auto;
+    color: rgba(var(--color-primary-rgb-value), 0.9);
+  }
+  .social-media {
+    width: 100%;
+  }
+  .rs-link {
+    display: flex;
+    width: 100%;
+    background-color: var(--color-quinary);
+    opacity: 0.75;
+    border: 2.75px solid rgba(var(--color-primary-rgb-value), 0.9);
+    border-radius: .35rem;
+    padding: 0.25rem 0.5rem;
+    align-items: center;
+    box-sizing: border-box;
+    transition: opacity 0.2s ease-in-out;
+  }
+  .icon-wrapper {
+    width: 32px;
+    min-width: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .rs-user {
+    margin-left: 0.5rem;
+  }
+  .rs-link:hover {
+    opacity: 1;
+  }
+</style>

@@ -1,0 +1,574 @@
+---
+import { formManager } from "@/i18n/components/formManager.ts"
+import type { FormConfig } from "@/types/formsTypes"
+
+interface FormManagerProps {
+  formConfig: FormConfig
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang, formConfig } = Astro.props as FormManagerProps
+
+const {
+  id,
+  name,
+  sections,
+  submitButtonText = "Enviar",
+  action = "#",
+  method = "POST",
+  className = ""
+} = formConfig
+
+---
+
+<form lang={lang} id={id} class={`form-manager ${className}`} action={action} method={method} data-lang={lang}>
+  {sections.map((section) => (
+    <section class="form-section">
+      <h1 class="section-title">{section.title}</h1>
+      {section.description && <p class="section-description">{section.description}</p>}
+      
+      <div class="fields-container">
+        {section.fields.map((field) => (
+          <div class={`field-wrapper ${field.className || ''} ${field.required ? 'required' : ''} ${field.type === 'textarea' ? 'full-width' : ''}`}>
+            <label for={field.id} class="field-label">{field.label}</label>
+            
+            {field.type === 'textarea' ? (
+              <textarea
+                id={field.id}
+                name={field.id}
+                placeholder={field.placeholder || ''}
+                required={field.required}
+                class="form-textarea auto-resize"
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+              ></textarea>
+            ) : field.type === 'select' ? (
+              <select 
+                id={field.id} 
+                name={field.id} 
+                required={field.required}
+                class="form-select"
+              >
+                <option value="" disabled selected>{formManager[lang].select}</option>
+                {field.options?.map((option) => (
+                  <option value={option.value}>{option.label}</option>
+                ))}
+              </select>            ) : field.type === 'checkbox' || field.type === 'radio' ? (
+              <div class="options-group">
+                {field.options?.map((option) => (                <div class="option-wrapper">
+                    <input 
+                      type={field.type === 'checkbox' || field.type === 'radio' ? field.type : 'checkbox'}
+                      id={`${field.id}-${option.value}`}
+                      name={field.id}
+                      value={option.value}
+                      required={field.required}
+                    />
+                    <label for={`${field.id}-${option.value}`} class="option-label">
+                      {option.label}
+                    </label>
+                  </div>
+                ))}
+              </div>            ) : (
+              <input 
+                type={field.type as "text" | "email" | "tel" | "number"}
+                id={field.id}
+                name={field.id}
+                placeholder={field.placeholder || ''}
+                required={field.required}
+                class="form-input"
+                data-validation={field.validation ? JSON.stringify(field.validation) : ''}
+              />
+            )}
+            
+            <div class="error-message" id={`error-${field.id}`}></div>
+          </div>
+        ))}
+      </div>
+    </section>
+  ))}
+  
+  <div class="form-actions">
+    <button type="submit" class="submit-button">
+      {submitButtonText}
+    </button>
+  </div>
+  
+  <div class="form-response">
+    <div class="success-message">
+      {formConfig.successMessage || "¡Formulario enviado con éxito! Gracias por contactarnos."}
+    </div>
+    <div class="error-message-global">
+      {formConfig.errorMessage || "Ha ocurrido un error al enviar el formulario. Por favor, inténtalo de nuevo."}
+    </div>
+  </div>
+</form>
+
+<script>
+  import { contact } from "@/i18n/contact"
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const forms = document.querySelectorAll('.form-manager')
+    
+    // Función para auto-redimensionar textareas
+    function autoResizeTextarea(this: HTMLTextAreaElement) {
+      this.style.height = 'auto'
+      this.style.height = (this.scrollHeight + 2) + 'px'
+    }
+    
+    // Inicializa los textareas auto-redimensionables
+    const autoResizeTextareas = document.querySelectorAll<HTMLTextAreaElement>('.auto-resize')
+    autoResizeTextareas.forEach(textarea => {
+      textarea.addEventListener('input', autoResizeTextarea)
+      textarea.addEventListener('paste', () => {
+        setTimeout(() => autoResizeTextarea.call(textarea), 0)
+      })
+      setTimeout(() => autoResizeTextarea.call(textarea), 0)
+    })
+    
+    forms.forEach(form => {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        
+        const isValid = (form instanceof HTMLFormElement) && validateForm(form)
+        
+        if (isValid) {
+          try {
+            const formData = new FormData(form as HTMLFormElement)
+            
+            const data: Record<string, any> = {}
+            for (const [key, value] of formData.entries()) {
+              if (data[key]) {
+                if (Array.isArray(data[key])) {
+                  data[key].push(value)
+                } else {
+                  data[key] = [data[key], value]
+                }
+              } else {
+                data[key] = value
+              }
+            }
+            
+            const formId = form.getAttribute('id') || 'unknown-form'
+            data.formId = formId
+            
+            const response = await submitFormJSON(data)
+            
+            if (response.ok) {
+              try {
+                const result = await response.json()
+                showSuccessMessage(form, result.message)
+                form.reset()
+                
+                const textareas = form.querySelectorAll<HTMLTextAreaElement>('.auto-resize')
+                textareas.forEach(textarea => {
+                  setTimeout(() => autoResizeTextarea.call(textarea), 0)
+                })
+              } catch (jsonError) {
+                console.error('Error parsing success response:', jsonError)
+                showSuccessMessage(form, 'Formulario enviado correctamente')
+                form.reset()
+              }
+            } else {
+              console.error('Response not OK:', response.status, response.statusText)
+              
+              const contentType = response.headers.get('content-type')
+              
+              if (contentType && contentType.includes('application/json')) {
+                try {
+                  const errorResult = await response.json()
+                  showErrorMessage(form, errorResult.error || `Error del servidor (${response.status})`)
+                } catch (jsonError) {
+                  console.error('Error parsing error response:', jsonError)
+                  showErrorMessage(form, `Error del servidor (${response.status})`)
+                }
+              } else {
+                const responseText = await response.text()
+                console.error('Non-JSON response:', responseText.substring(0, 200))
+                showErrorMessage(form, `Error del servidor (${response.status}): Respuesta inválida`)
+              }
+            }
+          } catch (error) {
+            console.error('Error al enviar el formulario:', error)
+            if (error instanceof TypeError && error.message.includes('fetch')) {
+              showErrorMessage(form, 'Error de conexión. Verifique que el servidor esté funcionando.')
+            } else {
+              showErrorMessage(form, 'Error de conexión. Por favor, inténtalo de nuevo.')
+            }
+          }
+        }
+      })
+      
+      const inputs = form.querySelectorAll('input, textarea, select')
+      inputs.forEach(input => {
+        input.addEventListener('blur', () => {
+          validateField(input as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)
+        })
+        
+        input.addEventListener('input', () => {
+          const errorElement = document.getElementById(`error-${input.id}`)
+          if (errorElement && errorElement.style.display === 'block') {
+            validateField(input as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)
+          }
+        })
+      })
+    })
+    
+    const validateForm = (form: Element): boolean => {
+      const inputs = form.querySelectorAll('input, textarea, select')
+      let isValid = true
+      
+      inputs.forEach(input => {
+        if (!validateField(input as HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement)) {
+          isValid = false
+        }
+      })
+      
+      return isValid
+    }
+    
+    const validateField = (field: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): boolean => {
+      const errorElement = document.getElementById(`error-${field.id}`)
+      if (!errorElement) return true
+      
+      const form = field.closest('.form-manager') as HTMLFormElement
+      const formLang = form?.getAttribute('data-lang') || 'es'
+      
+      if (field.required && !field.value.trim()) {
+        showFieldError(field, errorElement, contact[formLang as keyof typeof contact]?.required || 'Este campo es obligatorio')
+        return false
+      }
+
+      const validationAttr = field.getAttribute('data-validation')
+      if (validationAttr) {
+        try {
+          const validation = JSON.parse(validationAttr)
+          
+          if (validation.pattern && field.value) {
+            const regex = new RegExp(validation.pattern)
+            if (!regex.test(field.value)) {
+              showFieldError(field, errorElement, validation.errorMessage || 'Formato inválido')
+              return false
+            }
+          }
+          
+          if (validation.minLength && field.value.length < validation.minLength) {
+            showFieldError(field, errorElement, `Debe tener al menos ${validation.minLength} caracteres`)
+            return false
+          }
+          
+          if (validation.maxLength && field.value.length > validation.maxLength) {
+            showFieldError(field, errorElement, `No debe exceder ${validation.maxLength} caracteres`)
+            return false
+          }
+        } catch (e) {
+          console.error('Error al procesar la validación:', e)
+        }
+      }
+      
+      if (field.type === 'email' && field.value) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+        if (!emailRegex.test(field.value)) {
+          showFieldError(field, errorElement, 'Introduce un email válido')
+          return false
+        }
+      }
+      
+      if (field.type === 'number' && field.value) {
+        if (isNaN(Number(field.value))) {
+          showFieldError(field, errorElement, 'Introduce un valor numérico válido')
+          return false
+        }
+        
+        const min = field.getAttribute('min')
+        const max = field.getAttribute('max')
+        
+        if (min && Number(field.value) < Number(min)) {
+          showFieldError(field, errorElement, `El valor mínimo es ${min}`)
+          return false
+        }
+        
+        if (max && Number(field.value) > Number(max)) {
+          showFieldError(field, errorElement, `El valor máximo es ${max}`)
+          return false
+        }
+      }
+      
+      hideFieldError(field, errorElement)
+      return true
+    }
+    
+    const showFieldError = (field: HTMLElement, errorElement: HTMLElement, message: string) => {
+      field.classList.add('invalid')
+      errorElement.textContent = message
+      errorElement.style.display = 'block'
+      errorElement.classList.add('show')
+    }
+    
+    const hideFieldError = (field: HTMLElement, errorElement: HTMLElement) => {
+      field.classList.remove('invalid')
+      errorElement.textContent = ''
+      errorElement.style.display = 'none'
+      errorElement.classList.remove('show')
+    }
+    
+    const submitFormJSON = async (data: Record<string, any>) => {
+      const action = '/api/contact.json'
+      
+      return await fetch(action, {
+        method: 'POST',
+        body: JSON.stringify(data),
+        headers: {
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        }
+      })
+    }
+    
+    const showSuccessMessage = (form: Element, customMessage?: string) => {
+      const successMessage = form.querySelector('.success-message')
+      const errorMessage = form.querySelector('.error-message-global')
+      
+      if (successMessage) {
+        if (customMessage) {
+          successMessage.textContent = customMessage
+        }
+        successMessage.classList.add('show')
+        setTimeout(() => {
+          successMessage.classList.remove('show')
+        }, 5000)
+      }
+      
+      if (errorMessage) {
+        errorMessage.classList.remove('show')
+      }
+    }
+    
+    const showErrorMessage = (form: Element, customMessage?: string) => {
+      const successMessage = form.querySelector('.success-message')
+      const errorMessage = form.querySelector('.error-message-global')
+      
+      if (errorMessage) {
+        if (customMessage) {
+          errorMessage.textContent = customMessage
+        }
+        errorMessage.classList.add('show')
+        setTimeout(() => {
+          errorMessage.classList.remove('show')
+        }, 5000)
+      }
+      
+      if (successMessage) {
+        successMessage.classList.remove('show')
+      }
+    }
+  })
+</script>
+
+<style>
+  .form-manager {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto;
+    font-family: inherit;
+  }
+  
+  .form-section {
+    margin-bottom: 2.5rem;
+    padding: 1.5rem;
+    border-radius: .35rem;
+    background-color: var(--color-background-light);
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border: 2px solid var(--color-secondary);
+  }
+  
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+  }
+  .section-description {
+    margin-bottom: 1.5rem;
+    color: #666;
+    font-size: 0.95rem;
+  }
+  
+  .fields-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .field-wrapper {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .field-wrapper.full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .field-label {
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+  
+  .field-wrapper.required .field-label::after {
+    content: " *";
+    color:#d9534f;
+  }
+  
+  .form-input,
+  .form-textarea,
+  .form-select {
+    padding: 0.8rem 1rem;
+    border: 2px solid var(--color-tertiary);
+    border-radius: .35rem;
+    font-size: 1rem;
+    width: 100%;
+    background-color: white;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+  
+  .form-input:focus,
+  .form-textarea:focus,
+  .form-select:focus {
+    border-color: var(--color-secondary);
+    box-shadow: 0 0 0 2px rgba(0, 116, 116, 0.2);
+    outline: none;
+  }
+  
+  .form-textarea {
+    min-height: 120px;
+    resize: vertical;
+    transition: height 0.2s ease;
+    overflow-y: hidden;
+    overflow-x: hidden;
+  }
+  
+  .field-wrapper.full-width {
+    grid-column: 1 / -1;
+  }
+  
+  .options-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .option-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  
+  .option-label {
+    font-size: 0.95rem;
+    color: #333;
+  }
+  
+  .error-message {
+    color: #d9534f;
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
+    display: none;
+  }
+  
+  .error-message.show {
+    display: block;
+    opacity: 1;
+  }
+  
+  .form-actions {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .submit-button {
+    background-color: var(--color-primary);
+    color: var(--color-quinary);
+    border: 3px solid var(--color-tertiary);
+    border-radius: .35rem;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+  }
+  
+  .submit-button:hover {
+    background-color: rgba(var(--color-tertiary-rgb-value), 0.6);
+  }
+  
+  .submit-button:active {
+    transform: translateY(1px);
+  }
+  
+  .form-response {
+    margin-top: 1.5rem;
+    text-align: center;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .success-message {
+    color: #28a745;
+    padding: 1rem;
+    border-radius: .35rem;
+    background-color: rgba(40, 167, 69, 0.1);
+    border: 1px solid #28a745;
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+    display: none;
+    transform: translateY(-10px);
+    margin-bottom: 1rem;
+  }
+  
+  .success-message.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .error-message-global {
+    color: var(--color-error, #d9534f);
+    padding: 1rem;
+    border-radius: .35rem;
+    background-color: rgba(217, 83, 79, 0.1);
+    transition: all 0.3s ease-in-out;
+    border: 1px solid #d9534f;
+    opacity: 0;
+    display: none;
+    transform: translateY(-10px);
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
+  
+  .error-message-global.show {
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .invalid {
+    border-color: #d9534f !important;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .fields-container {
+      grid-template-columns: 1fr;
+    }
+    
+    .form-section {
+      padding: 1.25rem;
+    }
+  }
+</style>

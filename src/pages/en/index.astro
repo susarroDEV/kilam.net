@@ -1,0 +1,27 @@
+---
+import Hero from "@/components/sections/Hero.astro"
+import Introduction from "@/components/sections/Introduction.astro"
+import Services from "@/components/sections/Services.astro"
+import Layout from "@/layouts/Layout.astro"
+import { projects_en } from "@/data/projects/projects-en"
+
+export const prerender = true
+---
+
+<Layout
+  title="KILAM | Home"
+  description="The home page of KILAM, where you will find information about us, our projects, and services."
+  lang="en"
+  >
+  <Hero 
+    srcUrl="kilam-hut.webm" 
+    index 
+    type="video"
+    lang="en"
+    />
+  <Introduction 
+    projects={projects_en}
+    lang="en" 
+    />
+  <Services lang="en" />
+</Layout>

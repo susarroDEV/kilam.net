@@ -1,0 +1,138 @@
+---
+import ProjectsCarousel from "@/components/utils/carousel/ProjectsCarousel.astro"
+import Title from "@/components/utils/Title.astro"
+import { home } from "@/i18n/home.ts"
+import type { Project } from "@/types/projectsTypes"
+
+interface IntroductionProps {
+  projects: Project[]
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang, projects } = Astro.props as IntroductionProps
+---
+
+<section class="intro-container flex flex-col items-center justify-center min-h-screen relative">
+  <img 
+    src="/logos/kilam-rounded.avif" 
+    alt="Logo KILAM de fondo"
+    class="rounded-logo absolute -z-0 top-[5%] -left-[7%] md:-left-[7%]"
+    width="750"
+    height="750"
+  >
+  <section class="z-10 w-full flex justify-center mb-8 md:mb-0">
+    <img
+      src="/renders/LucasAndKimaniSkins.webp"
+      alt="Kimani and Lucas' skins render"
+      class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]"
+    />
+  </section>
+  <section class="intro-title z-10 md:w-[70%] h-full px-4 md:px-0 text-balance">
+    <Title
+      title={home[lang].introduction.title}
+      highlightTitle="KILAM"
+      uppercase={{
+        title: false,
+        highlightTitle: true,
+        subtitle: false
+      }}
+      align="left"
+      size="large"
+      jump={false}
+    />
+    <section class="text-introduction md:w-[90%] z-10 text-[#0D4040] text-pretty">
+      <p>
+        {home[lang].introduction.p1}
+      </p>
+      <p>
+        {home[lang].introduction.p2}
+      </p>
+      <p>
+        {home[lang].introduction.p3}
+      </p>
+    </section>
+  </section>
+  <section class="carousel-container z-10 flex flex-col items-center mt-10">
+    <ProjectsCarousel
+      projects={projects}
+      lang={lang}
+      />
+  </section>
+</section>
+
+<style>  
+  .intro-container {
+    background-color: var(--color-background-light);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+    overflow-x: hidden;
+  }
+
+  .rounded-logo {
+    opacity: 0.5;
+    max-width: 750px;
+  }
+  
+  h1 {
+    margin-bottom: 1.5rem;
+  }
+
+  p {
+    margin-bottom: 1.25rem;
+    line-height: 1.6;
+  }
+  
+  p strong {
+    font-weight: 600;
+    color: var(--color-tertiary);
+  }
+
+  @media (width >= 768px) {
+    .intro-container {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .carousel-container {
+      grid-column: 1 / -1;
+    }
+  }  
+  
+  @media (width < 768px) {
+    .rounded-logo {
+      top: 2%;
+      margin: auto;
+      left: 5%;
+      width: 90%;
+      max-width: 400px;
+      opacity: 0.3;
+    }
+
+    .text-introduction {
+      text-align: center;
+      font-size: 1rem;
+      width: 90vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+    
+    .intro-title {
+      margin-top: 6rem;
+      width: 100%;
+    }
+    
+    .intro-container {
+      padding-top: 5rem;
+      padding-bottom: 5rem;
+    }
+
+    .carousel-container {
+      width: 100%;
+    }
+  }
+</style>

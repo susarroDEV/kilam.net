@@ -1,0 +1,47 @@
+---
+import "@/styles/global.css"
+
+import Header from "@/components/scheme/Header.astro"
+import Footer from "@/components/scheme/Footer.astro"
+
+import type { MainLayoutProps } from "@/types/componentsTypes"
+
+let {title, description } : MainLayoutProps = Astro.props
+
+const pathname = Astro.url.pathname
+
+const { lang } = Astro.props
+---
+
+<!DOCTYPE html>
+<html lang={lang} >
+  <head>
+    <meta charset="utf-8">
+    <title>{title}</title>
+    <link rel="icon" href="/logos/kilam-rounded.avif">
+    <link rel="canonical" href={"https://kilam.net" + pathname} />
+    <meta name="description" content={description}>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preload" href="/src/fonts/ITCAvantGardePro-Md.otf" as="font" type="font/otf" crossorigin>
+    <link rel="preload" href="/logos/kilam-white.webp" as="image">
+    <script src="/copyHandler.js" defer></script>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={"https://kilam.net" + pathname} />
+    <meta property="og:image" content="/logos/kilam-rounded.avif" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:site_name" content="Grupo KILAM" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content="/logos/kilam-rounded.avif" />
+  </head> 
+  <body>
+    <Header lang={lang} />
+    <slot />
+    <Footer lang={lang} />
+  </body>
+</html>

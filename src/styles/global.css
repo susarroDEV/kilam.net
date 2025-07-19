@@ -1,0 +1,110 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'ITC Avant Garde Pro';
+  src: url(../fonts/ITCAvantGardePro-Md.otf) format('opentype');
+}
+
+:root {
+  --color-background-light: #FFFFFFDD;
+  --color-background-light-rgb-value: 240, 240, 240;
+  --color-primary: #0D4040;
+  --color-primary-rgb-value: 13, 64, 64;
+  --color-secondary: #51C9C9;
+  --color-secondary-rgb-value: 81, 201, 201;
+  --color-tertiary: #007474;
+  --color-tertiary-rgb-value: 0, 116, 116;
+  --color-quaternary: #99FFFF;
+  --color-quaternary-rgb-value: 153, 255, 255;
+  --color-quinary: #DEFFFF;
+  --color-quinary-rgb-value: 222, 255, 255;
+  --color-contrast: #F0F075;
+  --color-contrast-rgb-value: 240, 240, 117;
+  --color-art: #ce2828;
+  --color-art-rgb-value: 206, 40, 40;
+  --color-game-design: #b313d3;
+  --color-game-design-rgb-value: 179, 19, 211;
+  --color-development: #00a62f;
+  --color-development-rgb-value: 0, 166, 47;
+  --color-building: #988933;
+  --color-building-rgb-value: 152, 137, 51;
+}
+
+html::-webkit-scrollbar {
+  width: 6px;
+}
+
+html::-webkit-scrollbar-thumb {
+  background-color: var(--color-quinary);
+    border-radius: .35rem;
+}
+
+html::-webkit-scrollbar-track {
+  background-color: #003737;
+}
+
+html::-webkit-scrollbar-thumb:active {
+  background-color: var(--color-quinary);
+}
+
+html::-webkit-scrollbar-corner {
+  background-color: #003737;
+}
+
+@supports not selector(::-webkit-scrollbar) {
+  html {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-quinary) #003737;
+  }
+}
+
+html {
+  background-image: linear-gradient(#001717 0%, #002727 50%, #004242 100%);
+  background-repeat: no-repeat; 
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 90dvh;
+  overflow-x: hidden;
+  font-family: 'ITC Avant Garde Pro';
+  font-display: swap;
+}
+
+#main-header {
+  min-height: 86px;
+  will-change: transform, background;
+}
+
+@media (max-width: 768px) {
+  #main-header {
+    min-height: 70px;
+  }
+}
+
+::selection {
+  background-color: rgba(var(--color-tertiary-rgb-value), .9);
+  color: var(--color-contrast);
+}
+
+::-moz-selection {
+  background-color: rgba(var(--color-tertiary-rgb-value), .9);
+  color: var(--color-contrast);
+}
+
+input::selection,
+textarea::selection,
+select::selection {
+  background-color: rgba(var(--color-secondary-rgb-value), 0.3);
+  color: #000000;
+}
+
+input::-moz-selection,
+textarea::-moz-selection,
+select::-moz-selection {
+  background-color: rgba(var(--color-secondary-rgb-value), 0.3);
+  color: #000000;
+}

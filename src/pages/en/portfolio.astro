@@ -1,0 +1,18 @@
+---
+import Layout from "@/layouts/Layout.astro"
+import ProjectsTimeline from "@/components/sections/ProjectsTimeline.astro"
+import { projects_en } from "@/data/projects/projects-en"
+
+export const prerender = true
+---
+
+<Layout
+  title="KILAM | Projects"
+  description="Explore our featured projects at KILAM, from multiplayer events to unique Minecraft experiences."
+  lang="en"
+  >
+  <ProjectsTimeline 
+    projects={projects_en}
+    lang="en"
+    />
+</Layout>

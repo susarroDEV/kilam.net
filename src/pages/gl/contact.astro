@@ -1,0 +1,21 @@
+---
+import ContactForms from "@/components/sections/ContactForms.astro"
+import AlternativesContact from "@/components/sections/AlternativesContact.astro"
+import Layout from "@/layouts/Layout.astro"
+import { contactFormConfig_GL, postulateFormConfig_GL } from "@/data/forms/forms-gl"
+
+export const prerender = true
+---
+
+<Layout
+  title="KILAM | Contacto"
+  description="¿Tes algunha pregunta ou queres saber máis sobre os nosos servizos? ¡Contacta connosco! Estamos aquí para axudarche."
+  lang="gl"
+  >
+  <ContactForms 
+    contactFormConfig={contactFormConfig_GL}
+    postulateFormConfig={postulateFormConfig_GL}
+    lang="gl" 
+    />
+  <AlternativesContact lang="gl" /> 
+</Layout>

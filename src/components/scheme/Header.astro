@@ -1,0 +1,402 @@
+---
+import MenuIcon from "@/components/ui/MenuIcon.astro"
+import Footer from "@/components/scheme/Footer.astro"
+import { header } from "@/i18n/components/header"
+import { Image } from "astro:assets"
+
+interface HeaderProps {
+  lang: "es" | "en" | "ca" | "eu" | "gl"
+}
+
+const { lang } = Astro.props as HeaderProps
+
+let pathname = Astro.url.pathname
+
+let blackHeader = 
+  pathname === '/' || 
+  pathname === `/${lang}` || 
+  pathname === `/${lang}/` ||
+  pathname.includes('/about') || 
+  pathname.includes('/projects')
+---
+
+<div id="header-spacer"></div>
+
+<header id="main-header" class=`container overflow-x-hidden z-50 py-6 w-full transition-all duration-300 ${blackHeader ? "bg-black/60" : ""}`>
+  <nav id="mobile-nav" class="flex justify-center items-center gap-[200px] w-full h-[50px] text-[#CDFFFF]">
+    <div class="flex justify-start items-center w-1/2">
+      <a href={`/${lang}`} class="px-4">
+        <img src="/logos/kilam-rounded.avif" alt="The compressed logo of KILAM" width="50px" height="50px">
+      </a>
+    </div>
+    <div class="flex justify-end items-center w-1/2">
+      <button class="px-4" id="menu-button">
+        <MenuIcon />
+      </button>
+    </div>
+  </nav>
+  <nav id="desktop-nav" class="flex justify-evenly items-center w-full text-[#CDFFFF]">
+    <div class="flex justify-center items-center logo-container">
+      <a href={`/${lang}`}>
+        <Image
+          src="/logos/kilam-white.webp"
+          alt="The logo of KILAM"
+          width={275}
+          height={275}
+          class="header-logo"
+        />
+      </a>
+    </div>
+    <div class="flex justify-center gap-[75px] items-center">
+      <a href={`/${lang}`} class={`${pathname === '/' || pathname === `/${lang}` || pathname === `/${lang}/` ? 'actual-page' : ''}`}>{header[lang].index.toLocaleUpperCase()}</a>
+      <a href={`/${lang}/about`} class={`${pathname.includes('/about') ? 'actual-page' : ''}`}>{header[lang].about.toLocaleUpperCase()}</a>
+      <a href={`/${lang}/portfolio`} class={`${pathname.includes('/portfolio') ? 'actual-page' : ''}`}>{header[lang].portfolio.toLocaleUpperCase()}</a>
+      <a href={`/${lang}/contact`} class={`${pathname.includes('/contact') ? 'actual-page' : ''}`}>{header[lang].contact.toLocaleUpperCase()}</a>
+    </div>
+  </nav>
+</header>
+
+<dialog id="menu-dialog" class="fixed top-0 left-0 w-full h-full rounded-md">
+  <section class="dialog-content">
+    <section class="flex justify-between mx-8 mt-auto items-center gap-10">
+      <img src="/logos/kilam-white.webp" alt="The logo of KILAM" width="120px" height="200px"/>
+      <button id="close-button" class="close-button">&times;</button>
+    </section>
+    <div class="line-divider line-divider-upper"/>
+    <ul class="menu-list">
+      <li><a href={`/${lang}`}>{header[lang].index.toLocaleUpperCase()}</a></li>
+      <div class="line-divider"/>
+      <li><a href={`/${lang}/about`}>{header[lang].about.toLocaleUpperCase()}</a></li>
+      <div class="line-divider"/>
+      <li><a href={`/${lang}/portfolio`}>{header[lang].portfolio.toLocaleUpperCase()}</a></li>
+      <div class="line-divider"/>
+      <li><a href={`/${lang}/contact`}>{header[lang].contact.toLocaleUpperCase()}</a></li>
+    </ul>
+    <div class="mobile-footer-wrapper">
+      <Footer isInMobileDialog/>
+    </div>
+  </section>
+</dialog>
+
+<script is:inline>  document.addEventListener('DOMContentLoaded', () => {
+    const menuButton = document.getElementById('menu-button')
+    const menuDialog = document.getElementById('menu-dialog')
+    const closeButton = document.getElementById('close-button')
+    const header = document.getElementById('main-header')
+    let lastScrollTop = 0
+    
+    if (menuDialog) {
+      menuDialog.style.willChange = 'transform, opacity'
+    }
+      
+    menuButton?.addEventListener('click', () => {
+      menuDialog?.showModal()
+      void menuDialog.offsetWidth
+      menuDialog?.classList.add('dialog-open')
+    })
+
+    const handleCloseAnimation = () => {
+      if (!menuDialog) return
+      
+      menuDialog.classList.remove('dialog-open')
+      menuDialog.classList.add('dialog-closing')
+      
+      const handleAnimEnd = () => {
+        menuDialog.close()
+        menuDialog.classList.remove('dialog-closing')
+        menuDialog.removeEventListener('animationend', handleAnimEnd)
+      }
+      
+      menuDialog.addEventListener('animationend', handleAnimEnd)
+    }
+
+    closeButton?.addEventListener('click', handleCloseAnimation)
+
+    menuDialog?.addEventListener('click', (event) => {
+      if (event.target === menuDialog) {
+        handleCloseAnimation()
+      }
+    })
+    
+    function handleScroll() {
+      if (window.innerWidth >= 768) return
+      
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop
+      
+      if (scrollTop < 50) {
+        header.classList.remove('header-scrolled')
+        header.classList.remove('header-hidden')
+      } 
+      else if (scrollTop > lastScrollTop && scrollTop > 150) {
+        header.classList.add('header-hidden')
+        header.classList.add('header-scrolled')
+      } 
+      else if (scrollTop < lastScrollTop) {
+        header.classList.remove('header-hidden')
+        header.classList.add('header-scrolled')
+      }
+      
+      lastScrollTop = scrollTop
+    }
+    
+    window.addEventListener('scroll', handleScroll)
+    
+    window.addEventListener('resize', () => {
+      if (window.innerWidth >= 768) {
+        header.classList.remove('header-scrolled')
+        header.classList.remove('header-hidden')
+      } else {
+        handleScroll()
+      }
+    })
+  })
+</script>
+
+<style>
+  .line-divider {
+    margin: auto;
+    width: 85vw;
+    height: 5px;
+    background-image: linear-gradient(
+      to left,
+      rgba(var(--color-quinary-rgb-value), 0),
+      rgba(var(--color-quinary-rgb-value), .25),
+      rgba(var(--color-quinary-rgb-value), 0)
+    );
+  }
+  .line-divider-upper {
+    background-image: linear-gradient(
+      to left,
+      rgba(var(--color-quinary-rgb-value), 0),
+      rgba(var(--color-quinary-rgb-value), 1),
+      rgba(var(--color-quinary-rgb-value), 0)
+    );
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-width: 100%;
+  }
+
+  header {
+    backdrop-filter: blur(30px);
+    max-height: 6.5rem;
+    overflow-y: hidden;
+  }
+
+  .logo-container {
+    width: 275px;
+    height: 275px;
+    transition: all 0.3s ease;
+  }
+
+  .header-logo {
+    width: 275px !important;
+    height: 275px !important;
+    transition: all 0.3s ease;
+    object-fit: contain;
+  }
+
+  #main-header {
+    transform: translateY(0);
+  }
+
+  .header-scrolled {
+    background: rgba(0, 25, 25, 0.95) !important;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    padding-top: 0.5rem !important;
+    padding-bottom: 0.5rem !important;
+    min-height: 60px !important;
+  }
+
+  .header-hidden {
+    transform: translateY(-100%);
+  }
+
+  .header-scrolled .logo-container {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .header-scrolled .header-logo {
+    width: 200px !important;
+    height: 200px !important;
+  }
+
+  .mobile-footer-wrapper {
+    margin-top: auto;
+    margin-bottom: 1rem;
+  }
+
+  a {
+    transition: color 0.15s ease-in-out;
+  }
+
+  a:hover {
+    color: rgba(var(--color-quinary-rgb-value), 0.6);
+  }  
+  
+  dialog {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    border: none;
+    max-width: none;
+    max-height: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: translateY(-100%);
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+    pointer-events: none;
+  }
+  
+  dialog[open] {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  .actual-page {
+    background-color: var(--color-tertiary);
+    background: linear-gradient(to bottom, var(--color-quinary) 5%, var(--color-tertiary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: bold;
+    border-bottom: 4px solid var(--color-tertiary);
+    border-radius: 5px;
+    padding-top: 4px;
+  }
+
+  #mobile-nav {
+    display: none;
+    padding: 0 1rem;
+  }
+
+  #desktop-nav {
+    display: flex;
+  }  #menu-dialog {
+    background-image: linear-gradient(#001717 0%, #002727 50%, #004242 100%);
+  }
+  
+  #menu-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.8);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    will-change: opacity;
+  }
+  
+  #menu-dialog[open]::backdrop {
+    opacity: 1;
+  }
+  
+  .dialog-open {
+    animation: openDialog 0.3s cubic-bezier(0.17, 0.67, 0.21, 1) forwards;
+  }
+  
+  .dialog-closing {
+    animation: closeDialog 0.3s cubic-bezier(0.17, 0.67, 0.21, 1) forwards;
+  }
+  
+  @keyframes openDialog {
+    0% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  @keyframes closeDialog {
+    0% {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    100% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+  }
+
+  .dialog-content {
+    text-align: center;
+    color: #CDFFFF;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .close-button {
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: #CDFFFF;
+    cursor: pointer;
+  }
+
+  .menu-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .menu-list li {
+    margin: 1.5rem 0;
+  }
+
+  .menu-list a {
+    text-decoration: none;
+    color: #CDFFFF;
+    font-size: 1.5rem;
+    transition: color 0.3s;
+  }
+
+  .menu-list a:hover {
+    color: rgba(var(--color-quinary-rgb-value), 0.6);
+  }
+  
+  @media (width < 768px) {
+    #mobile-nav {
+      display: flex;
+    }
+
+    #desktop-nav {
+      display: none;
+    }
+    
+    #main-header {
+      position: fixed;
+      top: 0;
+    }
+    
+    #header-spacer {
+      height: 70px;
+      display: block;
+    }
+  }
+
+  @media (min-width: 768px) {
+    #main-header {
+      position: absolute;
+    }
+    
+    #header-spacer {
+      display: none;
+    }
+  }
+  
+  @media (width < 768px) {
+    body.home #header-spacer {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,211 @@
+---
+interface TitleProps {
+  title: string
+  highlightTitle?: string
+  subtitle?: string
+  size?: "small" | "medium" | "large" | "extra-large"
+  align?: "left" | "center" | "right"
+  theme?: "light" | "dark" | "accent"
+  jump?: boolean
+  uppercase?: {
+    title?: boolean
+    highlightTitle?: boolean
+    subtitle?: boolean
+  }
+  className?: string
+}
+
+const {
+  title,
+  highlightTitle,
+  subtitle,
+  size = "medium",
+  align = "center",
+  theme = "dark",
+  jump = true,
+  uppercase = {
+    title: false,
+    highlightTitle: false,
+    subtitle: false
+  },
+  className = "",
+} = Astro.props as TitleProps
+
+const sizeClasses: Record<TitleProps["size"] & string, string> = {
+  small: "title-small",
+  medium: "title-medium",
+  large: "title-large",
+  "extra-large": "title-extra-large"
+}
+
+const alignClasses: Record<TitleProps["align"] & string, string> = {
+  left: "text-left",
+  center: "text-center",
+  right: "text-right"
+}
+
+const themeClass = `theme-${theme}`
+
+const titleClasses = [
+  alignClasses[align],
+  uppercase.title ? "uppercase" : "",
+  className
+].filter(Boolean).join(" ")
+---
+
+<section class={`title-container ${alignClasses[align]} ${sizeClasses[size]} ${themeClass}`}>
+  <h2 class={titleClasses}>
+    {uppercase.title 
+      ? 
+      title.toUpperCase() 
+      : 
+      title
+      }
+    {jump && <br />}
+    {highlightTitle 
+      && (
+        <span class="highlight">
+          {uppercase.highlightTitle
+            ?
+            highlightTitle.toUpperCase() 
+            : 
+            highlightTitle
+            }
+        </span>
+    )}
+  </h2>
+  
+  {subtitle && (
+    <p class={`subtitle ${uppercase.subtitle ? "uppercase" : ""}`}>
+      {uppercase.subtitle ? subtitle.toUpperCase() : subtitle}
+    </p>
+  )}
+</section>
+
+<style>
+  .title-container {
+    margin-bottom: .5rem;
+    width: 100%;
+  }
+  h2 {
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0.5rem 0;
+  }
+  .title-small h2 {
+    font-size: 1.5rem;
+  }
+  .title-medium h2 {
+    font-size: 2rem;
+  }  .title-large h2 {
+    font-size: 2.75rem;
+  }
+  .title-extra-large h2 {
+    font-size: 5rem;
+    line-height: 1.1;
+  }
+  .title-small .subtitle {
+    font-size: 1rem;
+  }
+  .title-medium .subtitle {
+    font-size: 1.1rem;
+  }
+  .title-large .subtitle {
+    font-size: 1.25rem;
+  }
+  .title-extra-large .subtitle {
+    font-size: 2rem;
+  }
+  .theme-dark h2 {
+    color: var(--color-primary);
+  }
+  .theme-dark .highlight {
+    background: linear-gradient(to bottom, var(--color-secondary) 6%, var(--color-tertiary) 67%, var(--color-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .theme-dark .subtitle {
+    color: rgba(var(--color-primary-rgb-value), 0.8);
+  }
+  .theme-light h2 {
+    color: var(--color-quaternary);
+  }
+  .theme-light .highlight {
+    background: linear-gradient(to bottom, var(--color-quinary) 6%, var(--color-quaternary) 67%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }  .theme-light .subtitle {
+    color: var(--color-quinary);
+  }
+  
+  .theme-accent h2 {
+    color: rgba(var(--color-secondary-rgb-value), 0.8);
+  }
+  .theme-accent .highlight {
+    background: linear-gradient(to bottom, var(--color-quinary) 6%, var(--color-quaternary) 67%, var(--color-secondary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .theme-accent .subtitle {
+    color: var(--color-quinary);
+  }
+  .highlight {
+    font-weight: 800;
+  }
+  .subtitle {
+    margin-top: 0.5rem;
+    opacity: 0.9;
+    max-width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    hyphens: auto;
+  }  
+  .text-left .subtitle {
+    margin-left: 0;
+  }
+  .text-right .subtitle {
+    margin-right: 0;
+  }
+  @media (max-width: 768px) {
+    .text-left, .text-right {
+      text-align: center !important;
+    }
+    .text-left .subtitle,
+    .text-right .subtitle {
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .highlight {
+      display: inline-block;
+      margin-top: 0.25rem;
+    }
+    .subtitle {
+      max-width: 80%;
+    }
+    
+    .title-extra-large h2 {
+      font-size: 3rem;
+    }
+    
+    .title-extra-large .subtitle {
+      font-size: 1.3rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .title-large h2 {
+      font-size: 2.3rem;
+    }
+    
+    .title-extra-large h2 {
+      font-size: 2.6rem;
+    }
+    
+    .title-extra-large .subtitle {
+      font-size: 1.2rem;
+    }
+  }
+</style>

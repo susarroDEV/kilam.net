@@ -1,0 +1,23 @@
+---
+import LiteYoutube from "@/components/utils/LiteYoutube.astro"
+---
+
+<section class="mt-32">
+  <LiteYoutube 
+    videoId="Kh8Wm6v04jc"
+    backgroundImage="/kilam-conference-thumbnail.avif"
+    />  
+</section>
+
+<style>
+  section {
+    width: 50%;
+    margin: 4rem auto;
+  }
+
+  @media (width < 768px) {
+    section {
+      width: 90%;
+    }
+  }
+</style>

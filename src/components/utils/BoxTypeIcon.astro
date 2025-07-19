@@ -1,0 +1,24 @@
+---
+import TagIcon from "@/components/ui/project/TagIcon.astro"
+import BookIcon from "@/components/ui/project/BookIcon.astro"
+import BracketIcon from "@/components/ui/project/BracketIcon.astro"
+import GlobeIcon from "@/components/ui/project/GlobeIcon.astro"
+import PuzzleIcon from "@/components/ui/project/PuzzleIcon.astro"
+import RocketIcon from "@/components/ui/project/RocketIcon.astro"
+import SparkleIcon from "@/components/ui/project/SparkleIcon.astro"
+
+
+interface SocialMediaIconProps {
+  type: string
+}
+
+const { type } = Astro.props as SocialMediaIconProps
+---
+
+{ type === "main" && <TagIcon /> }
+{ type === "lore"  && <BookIcon />} 
+{ type === "development" && <BracketIcon /> }
+{ type === "ambience" && <GlobeIcon /> }
+{ type === "mechanics" && <RocketIcon /> }
+{ type === "gameplay" && <PuzzleIcon /> }
+{ type === "stuff" && <SparkleIcon  /> }

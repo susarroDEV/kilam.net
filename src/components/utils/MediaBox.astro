@@ -1,0 +1,79 @@
+---
+import type { MediaBox } from "@/types/projectsTypes"
+import LiteYoutube from "./LiteYoutube.astro"
+
+const { type, src, position, alt, backgroundImage } = Astro.props as MediaBox
+
+const display = position === "up" || position === "down" ? "vertical" : "horizontal"
+---
+
+{
+  type === "image" ? (
+    <img
+      src={src}
+      alt={alt || ""}
+      class={`box-image display-${display} position-${position}`}
+    />
+  ) : (
+    <LiteYoutube
+      videoId={src}
+      title={alt || ""}
+      backgroundImage={backgroundImage}
+    />
+  )
+}
+
+<style>
+  .box-image {
+    border-radius: .35rem;
+    width: 10rem;
+    max-width: 100%;
+    height: auto;
+    border: 2px solid var(--color-contrast);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+  .box-image:hover {
+    box-shadow: 0px 0px 10px var(--color-contrast);
+  }
+  
+  .display-horizontal {
+    width: 40%;
+    max-width: 100%;
+    min-width: 30rem;
+  }
+
+  .display-vertical {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 16/9;
+    object-fit: cover;
+  }
+
+  .position-down {
+    margin: auto 0;
+  }
+
+  .position-left {
+    flex: 0 0 auto;
+    order: -1;
+  }
+
+  .position-right {
+    flex: 0 0 auto;
+    order: 1;
+  }
+
+  @media (max-width: 768px) {
+    .box-image {
+      width: 20rem !important;
+    }
+    
+    .display-horizontal {
+      width: 100%;
+      min-width: unset;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+  }
+</style>

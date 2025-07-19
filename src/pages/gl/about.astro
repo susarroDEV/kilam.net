@@ -1,0 +1,23 @@
+---
+import Hero from "@/components/sections/Hero.astro"
+import KILAMConferences from "@/components/sections/KILAMConferences.astro"
+import MembersList from "@/components/sections/MembersList.astro"
+import Layout from "@/layouts/Layout.astro"
+
+export const prerender = true
+---
+
+<Layout
+  title="KILAM | Equipo"
+  description="Coñece ao equipo detrás de KILAM e as súas conferencias."
+  lang="gl"
+  >
+  <Hero
+    srcUrl="kilam-mountain.avif"
+    type="image"
+    about
+    lang="gl"
+    />
+  <MembersList lang="gl" />
+  <KILAMConferences lang="gl" />
+</Layout>
