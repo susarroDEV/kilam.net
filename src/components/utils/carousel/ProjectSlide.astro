@@ -21,7 +21,7 @@ const { id, name, texts, facts } = project
     alt={`Imagen del proyecto "${name}"`}
     width="1000"
     height="1000"
-    class="w-full h-full object-cover absolute -z-10"
+    class="w-full h-full object-cover object-center absolute -z-10"
     />
   <section class="container w-1/2 bg-black/50 h-full text-[#f0f0f0] p-8">
     <h1 class="text-2xl uppercase mb-3">
@@ -103,6 +103,15 @@ const { id, name, texts, facts } = project
     a {
       font-size: .5rem;
       padding: .25rem .5rem;
+    }
+  }
+
+  @media (min-width: 2560px) {
+    section {
+      aspect-ratio: 16/9;
+    }
+    img {
+      object-position: center center;
     }
   }
 </style>

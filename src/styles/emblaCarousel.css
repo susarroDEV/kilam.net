@@ -113,3 +113,9 @@
     --slide-height: 100%;
   }
 }
+
+@media (min-width: 2560px) {
+  .embla {
+    --slide-height: 32rem;
+  }
+}
