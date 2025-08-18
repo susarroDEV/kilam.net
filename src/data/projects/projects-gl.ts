@@ -79,7 +79,7 @@ export const projects_gl = [
           src: "jwctcyAboX4",
           backgroundImage: ""
         },
-        author: "Alexrolfo & ReiginBlast"
+        author: "AlexRolfo & ReiginBlast"
       },
       {
         type: "video",
@@ -659,7 +659,7 @@ export const projects_gl = [
     },
     facts: {
       date: "Abril 2025",
-      players: "Mikecrack y los compas"
+      players: "Mikecrack y Los Compas"
     }
   },
   {

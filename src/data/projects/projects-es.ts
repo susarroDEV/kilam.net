@@ -79,7 +79,7 @@ export const projects_es = [
           src: "jwctcyAboX4",
           backgroundImage: ""
         },
-        author: "Alexrolfo & ReiginBlast"
+        author: "AlexRolfo & ReiginBlast"
       },
       {
         type: "video",
@@ -595,8 +595,8 @@ export const projects_es = [
     id: "escondite-mikecrack",
     name: "Escondite secreto de 1 pixel ~ Mikecrack",
     texts: {
-      preview: "Mikecrack y los compas compiten en un escondite con la habilidad de hacerse diminutos. El microondas, el retrete o incluso un zapatero serán ideales escondites para este grupo de amigos.",
-      description: "Un proyecto comisionado por Mikecrack que combinaba construcción detallada en miniatura con un data pack para encogerse y agrandarse a voluntad. Con motivo del lanzamiento de 'Los Compacuentos 2', se creó una casa llena de escondites donde Los Compas pudieron rebuscar en los sitios más recónditos. La construcción fue diseñada para verse perfecta tanto en tamaño grande como pequeño, con muebles y decoraciones hechos pixel a pixel. El proyecto permitió que se escondieran en armarios, electrodomésticos y decoraciones, creando contenido divertido que entretuvo a más de 6 millones de personas.",
+      preview: "Mikecrack y Los Compas compiten en un escondite con la habilidad de hacerse diminutos. El microondas, el retrete o incluso un zapatero serán ideales escondites para este grupo de amigos.",
+      description: "Un proyecto comisionado por Mikecrack que combinaba construcción detallada en miniatura con un data pack para encogerse y agrandarse a voluntad. Con motivo del lanzamiento de 'Los Compacuentos 2', se creó una casa llena de escondites donde Los Compas pudieron rebuscar en los sitios más recónditos. La construcción fue diseñada para verse perfecta tanto en tamaño grande como pequeño, con muebles y decoraciones hechos pixel a pixel. El proyecto permitió que se escondieran en armarios, electrodomésticos y decoraciones, creando contenido divertido que entretuvo a más de 7 millones de personas.",
       boxes: [
         {
           title: "",
@@ -624,7 +624,7 @@ export const projects_es = [
           type: "mechanics",
           scheme: "compact",
           paragraphs: [
-            "Este vídeo, además de entretener a más de 6 millones de personas, se hizo para promocionar un libro de Los Compacuentos, inspirado en el famoso relato de Jack y las judías mágicas, pero cambiando las judías por frijolitos. En el vídeo, los frijolitos son los que ayudarían a Los Compas a encogerse para poder usar los huecos más pequeños como escondite. Además, con el mega frijolito, Mike pudo hacerse gigante y con unos pocos saltos destrozar toda la casa para encontrar más fácilmente a sus amigos durante la última ronda."
+            "Este vídeo, además de entretener a más de 7 millones de personas, se hizo para promocionar un libro de Los Compacuentos, inspirado en el famoso relato de Jack y las judías mágicas, pero cambiando las judías por frijolitos. En el vídeo, los frijolitos son los que ayudarían a Los Compas a encogerse para poder usar los huecos más pequeños como escondite. Además, con el mega frijolito, Mike pudo hacerse gigante y con unos pocos saltos destrozar toda la casa para encontrar más fácilmente a sus amigos durante la última ronda."
           ]
         },
         {
@@ -659,7 +659,7 @@ export const projects_es = [
     },
     facts: {
       date: "Abril 2025",
-      players: "Mikecrack y los compas"
+      players: "Mikecrack y Los Compas"
     }
   },
   {
