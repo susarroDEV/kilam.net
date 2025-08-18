@@ -4,13 +4,15 @@ import ChatIcon from "@/components/ui/ChatIcon.astro"
 import LiteYoutube from "@/components/utils/LiteYoutube.astro"
 import type { ProjectFeedback } from "@/types/projectsTypes"
 import { portfolio } from "@/i18n/portfolio"
+import { Image } from "astro:assets"
 
 interface FeedbackCommentsProps {
   feedback: ProjectFeedback[] | []
+  projectId: string
   lang: "es" | "en" | "ca" | "eu" | "gl"
 }
 
-const { feedback, lang } = Astro.props as FeedbackCommentsProps
+const { feedback, lang, projectId } = Astro.props as FeedbackCommentsProps
 ---
 {
   feedback.length > 0 && 
@@ -41,19 +43,34 @@ const { feedback, lang } = Astro.props as FeedbackCommentsProps
             .map((item) => (
               <div>
                 {item.type === 'video' && 
-                  <LiteYoutube 
+                  <LiteYoutube
+                    backgroundImage={`/projects/${projectId}/${item.author?.toLowerCase()}.avif`}
                     videoId={typeof item.content === 'string' ? item.content : item.content.src}
                   />
                 }
                 {item.type === 'quote' && 
-                  <p>''{item.content}''</p>
+                  <p class="author-text">
+                    ''{item.content}''
+                  </p>
                 }
-                <span>
-                  ~ {item.author}
-                </span>
+                {item.author &&
+                  <span class="author-name">
+                    {item.type === 'quote' &&
+                      <Image
+                        src={`/projects/${projectId}/${item.author.toLowerCase()}.avif`}
+                        alt={item.author}
+                        width={40}
+                        height={40}
+                        class="author-image rounded-full"
+                      />
+                    }
+                    <span>
+                      {item.author}
+                    </span>
+                  </span>
+                }
               </div>
             ))
-
         }
       </div>
     </section>
@@ -100,6 +117,17 @@ const { feedback, lang } = Astro.props as FeedbackCommentsProps
       inset 0px 0px 10px var(--color-quinary);
   }
 
+  .author-name {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .author-text {
+    font-style: italic;
+  }
+
   .feedback-comments {
     display: flex;
     flex-wrap: wrap;
@@ -120,7 +148,7 @@ const { feedback, lang } = Astro.props as FeedbackCommentsProps
     position: relative;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     max-width: 400px;
     padding: 1rem 2rem;
@@ -131,6 +159,17 @@ const { feedback, lang } = Astro.props as FeedbackCommentsProps
     font-size: 1.2rem;
     font-weight: 600;
     margin-top: 0.5rem;
+  }
+
+  .feedback-comments > div p {
+    color: var(--color-quinary);
+    font-size: 1.1rem;
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   p {
@@ -184,6 +223,10 @@ const { feedback, lang } = Astro.props as FeedbackCommentsProps
       font-size: 1rem;
     }
     
+    .feedback-comments > div p {
+      font-size: 1rem;
+    }
+    
     .feedback-comments > div span {
       font-size: 1.1rem;
     }
@@ -207,6 +250,10 @@ const { feedback, lang } = Astro.props as FeedbackCommentsProps
     }
     
     p {
+      font-size: 0.95rem;
+    }
+    
+    .feedback-comments > div p {
       font-size: 0.95rem;
     }
     

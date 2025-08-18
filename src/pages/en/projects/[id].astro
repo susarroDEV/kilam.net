@@ -7,7 +7,6 @@ import Layout from "@/layouts/Layout.astro"
 import FeedbackComments from "@/components/sections/FeedbackComments.astro"
 
 import { projects_en } from "@/data/projects/projects-en"
-import type { Project } from "@/types/projectsTypes"
 
 const lang = "en"
 const { id: rawId } = Astro.params
@@ -50,5 +49,6 @@ export const prerender = true
   <FeedbackComments
     feedback={project.texts.feedback}
     lang={lang}
+    projectId={project.id}
     />
 </Layout>

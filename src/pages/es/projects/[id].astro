@@ -6,7 +6,6 @@ import ProjectBoxes from "@/components/sections/ProjectBoxes.astro"
 import Layout from "@/layouts/Layout.astro"
 import FeedbackComments from "@/components/sections/FeedbackComments.astro"
 
-import type { Project } from "@/types/projectsTypes"
 import { projects_es } from "@/data/projects/projects-es"
 
 const lang = "es"
@@ -50,5 +49,6 @@ export const prerender = true
   <FeedbackComments
     feedback={project.texts.feedback}
     lang={lang}
+    projectId={project.id}
     />
 </Layout>
