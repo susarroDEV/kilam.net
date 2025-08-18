@@ -139,7 +139,7 @@ const { feedback, lang, projectId } = Astro.props as FeedbackCommentsProps
 
 
   .feedback-comments > div {
-    height: 20rem;
+    min-height: 20rem;
     background-color: var(--color-primary);
     border-radius: 0.35rem;
     border: 2px solid var(--color-secondary);
@@ -192,6 +192,13 @@ const { feedback, lang, projectId } = Astro.props as FeedbackCommentsProps
     .feedback-comments > div {
       flex: 1 1 45%;
       min-width: 280px;
+      height: 20rem;
+    }
+  }
+
+  @media (min-width: 1600px) {
+    .feedback-comments > div {
+      min-height: 24rem;
     }
   }
 
@@ -212,6 +219,7 @@ const { feedback, lang, projectId } = Astro.props as FeedbackCommentsProps
       min-width: unset;
       max-width: none;
       height: 18rem;
+      min-height: unset;
       padding: 1rem 1.5rem;
     }
     
@@ -241,6 +249,7 @@ const { feedback, lang, projectId } = Astro.props as FeedbackCommentsProps
     
     .feedback-comments > div {
       height: 16rem;
+      min-height: unset;
       padding: 0.75rem 1rem;
     }
     
