@@ -222,9 +222,9 @@ export const members = [
         url: "https://x.com/Srp_Seba"
       },
       {
-        name: "Twitch",
+        name: "Discord",
         user: "srp_seba",
-        url: "https://www.twitch.tv/srp_seba"
+        url: ""
       }
     ]
   },
@@ -243,14 +243,6 @@ export const members = [
     ]
   },
   {
-    name: "Guigofer",
-    role: "Ayudante",
-    scopes: [
-      "placeholder"
-    ],
-    rrss: []
-  },
-  {
     name: "Ikrlegido12",
     role: "Ayudante",
     scopes: [
@@ -263,9 +255,9 @@ export const members = [
         url: "https://x.com/ikrlegidoYT"
       },
       {
-        name: "Twitch",
+        name: "Discord",
         user: "ikrlegido",
-        url: "https://www.twitch.tv/ikrlegido"
+        url: ""
       },
       {
         name: "YouTube",
@@ -299,6 +291,74 @@ export const members = [
         name: "X",
         user: "RayoYT__",
         url: "https://x.com/RayoYT__"
+      }
+    ]
+  },
+  {
+    name: "Guigofer",
+    role: "Ayudante",
+    scopes: [
+      "art"
+    ],
+    rrss: [
+      {
+        name: "Instagram",
+        user: "guillemf_08",
+        url: "https://www.instagram.com/guillemf_08/"
+      },
+      {
+        name: "Discord",
+        user: "guigofer",
+        url: ""
+      }
+    ]
+  },
+  {
+    name: "ThePKAMC",
+    role: "Ayudante",
+    scopes: [
+      "game-design"
+    ],
+    rrss: [
+      {
+        name: "YouTube",
+        user: "ThePKAMC",
+        url: "https://www.youtube.com/channel/UCD-B5Z1-w3EEms5hrtEUM_g"
+      },
+      {
+        name: "X",
+        user: "thepkamc",
+        url: "https://x.com/thepkamc"
+      },
+      {
+        name: "Twitch",
+        user: "thepkamc",
+        url: "https://www.twitch.tv/thepkamc"
+      }
+    ]
+  },
+  {
+    name: "NekoBv",
+    role: "Ayudante",
+    scopes: [
+      "art",
+      "development"
+    ],
+    rrss: [
+      {
+        name: "YouTube",
+        user: "elnekodnd",
+        url: "https://www.youtube.com/@elnekodnd"
+      },
+      {
+        name: "X",
+        user: "NekoBv3",
+        url: "https://x.com/NekoBv3"
+      },
+      {
+        name: "Twitch",
+        user: "nekobv",
+        url: "https://www.twitch.tv/nekobv"
       }
     ]
   }
