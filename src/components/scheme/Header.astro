@@ -84,17 +84,20 @@ let blackHeader =
     const closeButton = document.getElementById('close-button')
     const header = document.getElementById('main-header')
     let lastScrollTop = 0
+    let menuScrollY = 0
     
     if (menuDialog) {
       menuDialog.style.willChange = 'transform, opacity'
     }
       
     menuButton?.addEventListener('click', () => {
+      menuScrollY = window.scrollY
       menuDialog?.showModal()
       void menuDialog.offsetWidth
       menuDialog?.classList.add('dialog-open')
       document.body.classList.add('menu-open')
       document.documentElement.classList.add('menu-open')
+      document.body.style.top = `-${menuScrollY}px`
     })
 
     const handleCloseAnimation = () => {
@@ -109,6 +112,8 @@ let blackHeader =
         menuDialog.removeEventListener('animationend', handleAnimEnd)
         document.body.classList.remove('menu-open')
         document.documentElement.classList.remove('menu-open')
+        document.body.style.top = ''
+        window.scrollTo(0, menuScrollY)
       }
       
       menuDialog.addEventListener('animationend', handleAnimEnd)

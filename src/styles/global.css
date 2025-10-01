@@ -120,7 +120,8 @@ select::-moz-selection {
 body.modal-open,
 body.menu-open {
   overflow: hidden !important;
-  height: 100vh;
+  position: fixed;
+  width: 100%;
 }
 
 html.modal-open,

@@ -82,21 +82,27 @@ import CrossIcon from "@/components/ui/CrossIcon.astro"
 
     let currentImages: Element[] = []
     let currentIndex = 0
+    let scrollY = 0
 
     function openModal(src: string, alt: string, images: Element[], index: number) {
       currentImages = images
       currentIndex = index
       img.src = src
       img.alt = alt
+      
+      scrollY = window.scrollY
       modal.classList.add('active')
       document.body.classList.add('modal-open')
       document.documentElement.classList.add('modal-open')
+      document.body.style.top = `-${scrollY}px`
     }
 
     function closeModal() {
       modal.classList.remove('active')
       document.body.classList.remove('modal-open')
       document.documentElement.classList.remove('modal-open')
+      document.body.style.top = ''
+      window.scrollTo(0, scrollY)
       currentImages = []
       currentIndex = 0
     }
