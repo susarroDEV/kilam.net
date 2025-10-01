@@ -36,7 +36,7 @@ export const home = {
       title: "Som",
       p1: "A KILAM ens dediquem a crear sèries, esdeveniments i projectes de gaming per a creadors de continguts centrats en Minecraft. La nostra major prioritat és assegurar-nos que tant la gent que juga com la que veu les nostres creacions pugui viure experiències úniques, originals i diferenciadores.",
       p2: "Disposem d'un equip compromès, especialitzat en els diferents àmbits d'organització d'esdeveniments: des de programadors experimentats en plugins i mods, fins a constructors sorprenents. A més, els nostres servidors ens permeten oferir la flexibilitat necessària per garantir un rendiment extraordinari, sigui quin sigui l'esdeveniment a desenvolupar.",
-      p3: "Tes algún proxecto que che gustaría portar a cabo? Podemos axudarte! Contáctanos sen compromiso e descubre o que KILAM pode chegar a facer a partir da túa idea."
+      p3: "Tens algun projecte que vulguis dur a terme? Podem ajudar-te! Contacta amb nosaltres sense cap comprimís i descobreix el que KILAM pot arribar a fer arran de la teva idea."
     },
     carousel: "Veure més",
     services: {
