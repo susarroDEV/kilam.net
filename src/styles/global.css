@@ -22,12 +22,20 @@
   --color-contrast-rgb-value: 240, 240, 117;
   --color-art: #f22d2d;
   --color-art-rgb-value: 242, 45, 45;
+  --color-art-bg: #fad4d4;
+  --color-art-bg-rgb-value: 250, 212, 212;
   --color-game-design: #b313d3;
   --color-game-design-rgb-value: 179, 19, 211;
+  --color-game-design-bg: #e3d2e7;
+  --color-game-design-bg-rgb-value: 227, 210, 231;
   --color-development: #1b8d3b;
   --color-development-rgb-value: 27, 141, 59;
+  --color-development-bg: #c2e1cb;
+  --color-development-bg-rgb-value: 194, 225, 203;
   --color-building: #be651c;
   --color-building-rgb-value: 190, 101, 28;
+  --color-building-bg: #edd1ba;
+  --color-building-bg-rgb-value: 237, 209, 186;
 }
 
 html::-webkit-scrollbar {
