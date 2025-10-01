@@ -15,6 +15,8 @@ const { media, position } = Astro.props as CollageBoxProps
       <img 
         src = {item.src}
         alt = {item.alt || ""}
+
+        class = "clickable-image"
         />
     ))
   }
@@ -36,6 +38,7 @@ const { media, position } = Astro.props as CollageBoxProps
     border-radius: 0.35rem;
     border: 2px solid var(--color-contrast);
     transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
   }
 
   .collage-box img:hover {

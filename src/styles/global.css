@@ -116,3 +116,14 @@ select::-moz-selection {
   background-color: rgba(var(--color-secondary-rgb-value), 0.3);
   color: #000000;
 }
+
+body.modal-open,
+body.menu-open {
+  overflow: hidden !important;
+  height: 100vh;
+}
+
+html.modal-open,
+html.menu-open {
+  overflow: hidden !important;
+}

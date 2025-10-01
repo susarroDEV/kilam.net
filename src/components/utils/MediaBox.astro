@@ -12,7 +12,7 @@ const display = position === "up" || position === "down" ? "vertical" : "horizon
     <img
       src={src}
       alt={alt || ""}
-      class={`box-image display-${display} position-${position}`}
+      class={`box-image clickable-image display-${display} position-${position}`}
     />
   ) : (
     <LiteYoutube
@@ -31,6 +31,7 @@ const display = position === "up" || position === "down" ? "vertical" : "horizon
     height: auto;
     border: 2px solid var(--color-contrast);
     transition: box-shadow 0.3s ease-in-out;
+    cursor: pointer;
   }
 
   .box-image:hover {

@@ -3,6 +3,7 @@ import type { ProjectTextBox } from "@/types/projectsTypes"
 import MediaBox from "@/components/utils/MediaBox.astro"
 import CollageBox from "@/components/utils/CollageBox.astro"
 import BoxTypeIcon from "@/components/utils/BoxTypeIcon.astro"
+import ImageModal from "@/components/utils/ImageModal.astro"
 import { portfolio } from "@/i18n/portfolio"
 
 interface InfoBoxProps {
@@ -59,6 +60,7 @@ const display =
       )
     }
   </div>
+  <ImageModal />
 </article>
 
 <style>

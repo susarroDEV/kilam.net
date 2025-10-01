@@ -93,6 +93,8 @@ let blackHeader =
       menuDialog?.showModal()
       void menuDialog.offsetWidth
       menuDialog?.classList.add('dialog-open')
+      document.body.classList.add('menu-open')
+      document.documentElement.classList.add('menu-open')
     })
 
     const handleCloseAnimation = () => {
@@ -105,6 +107,8 @@ let blackHeader =
         menuDialog.close()
         menuDialog.classList.remove('dialog-closing')
         menuDialog.removeEventListener('animationend', handleAnimEnd)
+        document.body.classList.remove('menu-open')
+        document.documentElement.classList.remove('menu-open')
       }
       
       menuDialog.addEventListener('animationend', handleAnimEnd)
