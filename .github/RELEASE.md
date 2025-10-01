@@ -1,48 +1,64 @@
-# Release Workflow
+<a name="readme-top"></a>
 
-This GitHub Action automatically creates releases when you push a version tag.
+# 🚀 Workflow de Releases Automáticas
 
-## How to Create a Release
+Esta GitHub Action crea releases automáticamente cuando publicas una etiqueta de versión. ⚡
 
-1. **Make sure your changes are committed:**
-   ```bash
-   git add .
-   git commit -m "Your commit message"
-   ```
+## 📦 Cómo Crear un Release
 
-2. **Create and push a version tag:**
-   ```bash
-   # Create a new tag (e.g., v1.0.0)
-   git tag v1.0.0
-   
-   # Push the tag to GitHub
-   git push origin v1.0.0
-   ```
+### 1️⃣ **Asegúrate de que tus cambios estén confirmados:**
 
-3. **The workflow will automatically:**
-   - Install dependencies using pnpm
-   - Build the project with `pnpm run build`
-   - Create a `dist.zip` archive containing the built files
-   - Create a GitHub release with the tag name
-   - Attach the `dist.zip` file to the release
-
-## Tag Naming Convention
-
-Tags must follow the format `v*.*.*` (e.g., v1.0.0, v2.1.3, v0.0.1) to trigger the workflow.
-
-Examples:
-- ✅ `v1.0.0` - Will trigger the workflow
-- ✅ `v2.1.3` - Will trigger the workflow
-- ❌ `1.0.0` - Will NOT trigger (missing 'v' prefix)
-- ❌ `release-1.0` - Will NOT trigger (wrong format)
-
-## Viewing Releases
-
-After the workflow completes, you can find your release at:
-```
-https://github.com/YOUR_USERNAME/kilam.net/releases
+```bash
+git add .
+git commit -m "Tu mensaje de commit"
 ```
 
-## Downloading a Release
+### 2️⃣ **Crea y publica una etiqueta de versión:**
 
-Users can download the `dist.zip` file from the releases page and deploy it to their server.
+```bash
+# Crea una nueva etiqueta (ej: v1.0.0)
+git tag v1.0.0
+
+# Publica la etiqueta a GitHub
+git push origin v1.0.0
+```
+
+### 3️⃣ **El workflow hará automáticamente:**
+
+- 📥 Instalar dependencias usando `pnpm`
+- 🔨 Construir el proyecto con `pnpm run build`
+- 📦 Crear un archivo `dist.zip` con los archivos compilados
+- 🎉 Crear un GitHub release con el nombre de la etiqueta
+- 📎 Adjuntar el archivo `dist.zip` al release
+
+---
+
+## 🏷️ Convención de Nombres para Etiquetas
+
+Las etiquetas deben seguir el formato `v*.*.*` (ej: v1.0.0, v2.1.3, v0.0.1) para activar el workflow.
+
+**Ejemplos:**
+
+- ✅ `v1.0.0` - **Activará** el workflow
+- ✅ `v2.1.3` - **Activará** el workflow
+- ✅ `v0.0.1` - **Activará** el workflow
+- ❌ `1.0.0` - **NO activará** (falta el prefijo 'v')
+- ❌ `release-1.0` - **NO activará** (formato incorrecto)
+
+---
+
+## 👀 Ver los Releases
+
+Después de que el workflow se complete, puedes encontrar tu release en:
+
+```
+https://github.com/susarrodev/kilam.net/releases
+```
+
+---
+
+## 💾 Descargar un Release
+
+Los usuarios pueden descargar el archivo `dist.zip` desde la página de releases y desplegarlo en su servidor. 🌐
+
+<p align="right">(<a href="#readme-top">volver arriba</a>)</p>
