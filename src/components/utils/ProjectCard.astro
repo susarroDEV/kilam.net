@@ -53,7 +53,7 @@ const { id, name, texts, facts } = project
 
   .timeline-dot {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 10px);
     width: 20px;
     height: 20px;
     border-radius: 50%;
@@ -66,7 +66,7 @@ const { id, name, texts, facts } = project
     transition: transform 0.3s ease , box-shadow 0.3s ease;
     overflow: hidden; 
     background-color: var(--color-contrast);
-    transform: translateY(-50%);
+    transform-origin: center;
   }
 
   article.left .timeline-dot {
@@ -81,7 +81,7 @@ const { id, name, texts, facts } = project
 
   article:hover .timeline-dot {
     box-shadow: 0 0px 16px #DDD6;
-    transform: scale(1.25) translateY(-50%);
+    transform: scale(1.25);
   }
 
   .timeline-dot img {
